@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAI — WINTER ARC | 90 Days of Discipline</title>
+  <meta name="description" content="Personal 90-day discipline and self-improvement tracker. 90 days. One mission. A stronger you.">
+  
+  <!-- Google Fonts (with elegant system serif/sans fallbacks) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="winter-arc-app">
+
+  <!-- Cinematic Snow Particles Canvas -->
+  <canvas id="snowCanvas" class="snow-canvas" aria-hidden="true"></canvas>
+
+  <!-- Ambient Audio Indicator / Atmosphere Bar -->
+  <div id="ambientNotification" class="ambient-toast" aria-live="polite"></div>
+
+  <!-- ==================== LANDING SCREEN ==================== -->
+  <section id="landingScreen" class="landing-screen active" aria-label="Welcome to Winter Arc">
+    <div class="landing-backdrop">
+      <div class="landing-overlay"></div>
+    </div>
+
+    <div class="landing-content">
+      <div class="brand-crest">
+        <svg class="crown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 18h18l-2-10-4 4-3-6-3 6-4-4L3 18z" fill="url(#goldGradient)" stroke="url(#goldGradient)"/>
+          <circle cx="3" cy="8" r="1.2" fill="#f7e5b5"/>
+          <circle cx="8" cy="6" r="1.2" fill="#f7e5b5"/>
+          <circle cx="12" cy="4" r="1.2" fill="#f7e5b5"/>
+          <circle cx="16" cy="6" r="1.2" fill="#f7e5b5"/>
+          <circle cx="21" cy="8" r="1.2" fill="#f7e5b5"/>
+          <defs>
+            <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#fdf3cf"/>
+              <stop offset="50%" stop-color="#d4af37"/>
+              <stop offset="100%" stop-color="#997722"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="crest-tag">DISCIPLINE BUILDS FREEDOM</span>
+      </div>
+
+      <div class="landing-titles">
+        <h1 class="landing-brand-title">
+          <span class="brand-name">SAI</span>
+          <span class="brand-arc">WINTER <em class="arc-script">Arc</em></span>
+        </h1>
+        <div class="script-accent">Progress Over Perfection</div>
+        <p class="landing-subtitle">90 DAYS OF DISCIPLINE</p>
+      </div>
+
+      <p class="landing-description">
+        Build better habits. Stay consistent. Become stronger.
+        <br>
+        <span class="landing-quote">“A disciplined mind creates a freer life.”</span>
+      </p>
+
+      <div class="landing-pillars-preview">
+        <span class="pillar-chip">PHYSICAL</span>
+        <span class="pillar-dot">·</span>
+        <span class="pillar-chip">MENTAL</span>
+        <span class="pillar-dot">·</span>
+        <span class="pillar-chip">ACADEMIC</span>
+        <span class="pillar-dot">·</span>
+        <span class="pillar-chip">SKILLS</span>
+        <span class="pillar-dot">·</span>
+        <span class="pillar-chip">DISCIPLINE</span>
+        <span class="pillar-dot">·</span>
+        <span class="pillar-chip">LIFE</span>
+      </div>
+
+      <div class="landing-cta-group">
+        <button id="btnLandingStart" class="btn btn-gold btn-glow">
+          <span class="btn-text">START MY WINTER ARC</span>
+          <svg class="btn-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </button>
+
+        <button id="btnLandingExisting" class="btn btn-outline">
+          <span class="btn-text">I ALREADY HAVE A TRACKER</span>
+        </button>
+      </div>
+
+      <div class="landing-footer-tag">
+        <span>SAME YOU</span>
+        <span class="divider">|</span>
+        <span class="highlight">STRONGER YOU</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MAIN APPLICATION CONTAINER ==================== -->
+  <div id="appContainer" class="app-container" style="display: none;">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="top-nav" id="topNav">
+      <div class="nav-inner">
+        <div class="nav-brand" id="navBrandLogo">
+          <svg class="nav-crown" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 18h18l-2-10-4 4-3-6-3 6-4-4L3 18z"/>
+          </svg>
+          <div class="brand-text-wrap">
+            <span class="brand-bold">SAI</span>
+            <span class="brand-sep">/</span>
+            <span class="brand-thin">WINTER ARC</span>
+          </div>
+          <span class="nav-day-badge" id="navDayBadge">DAY 01 / 90</span>
+        </div>
+
+        <nav class="nav-links" id="desktopNavLinks">
+          <a href="#dashboardSection" class="nav-link active" data-section="dashboardSection">Dashboard</a>
+          <a href="#dailySection" class="nav-link" data-section="dailySection">Daily</a>
+          <a href="#goalsSection" class="nav-link" data-section="goalsSection">Goals</a>
+          <a href="#calendarSection" class="nav-link" data-section="calendarSection">Calendar</a>
+          <a href="#analyticsSection" class="nav-link" data-section="analyticsSection">Progress</a>
+          <a href="#journalSection" class="nav-link" data-section="journalSection">Journal</a>
+          <a href="#settingsSection" class="nav-link" data-section="settingsSection">Settings</a>
+        </nav>
+
+        <div class="nav-actions">
+          <!-- Atmosphere Sound Synthesizer Toggle -->
+          <button id="btnSoundToggle" class="icon-btn" title="Toggle Winter Atmospheric Sound" aria-label="Toggle Winter Atmospheric Sound">
+            <svg class="sound-icon sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+              <line x1="23" y1="9" x2="17" y2="15"/>
+              <line x1="17" y1="9" x2="23" y2="15"/>
+            </svg>
+            <svg class="sound-icon sound-on" style="display:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+              <path d="M15.54 8.46a5 5 0 010 7.07"/>
+              <path d="M19.07 4.93a10 10 0 010 14.14"/>
+            </svg>
+          </button>
+
+          <!-- Snow Particles Toggle -->
+          <button id="btnSnowToggle" class="icon-btn active" title="Toggle Snow Particles" aria-label="Toggle Snow Particles">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14"/>
+            </svg>
+          </button>
+
+          <!-- User Quick Profile Pill -->
+          <button id="navUserProfileBtn" class="user-pill-btn" title="View / Edit Profile">
+            <div class="user-avatar-initial" id="userInitial">S</div>
+            <span class="user-pill-name" id="userPillName">Sai</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY CONTENT -->
+    <main class="main-content" id="mainContent">
+
+      <!-- ==================== 1. DASHBOARD OVERVIEW ==================== -->
+      <section id="dashboardSection" class="content-section">
+        
+        <!-- CINEMATIC HERO GREETING BANNER -->
+        <div class="dashboard-hero-card">
+          <div class="hero-top-row">
+            <div class="hero-meta">
+              <span class="mission-tag">WINTER ARC 2026</span>
+              <span class="dot-separator">•</span>
+              <span class="phase-tag" id="currentPhaseTag">PHASE 01: BUILD THE FOUNDATION</span>
+            </div>
+            <div class="hero-date-display" id="heroLiveDate">Thursday, 01 October 2026</div>
+          </div>
+
+          <div class="hero-main-row">
+            <div class="hero-headline-wrap">
+              <h2 class="hero-greeting" id="heroGreeting">GOOD MORNING, SAI.</h2>
+              <div class="hero-counter-wrap">
+                <span class="hero-day-stat" id="heroDayCounter">DAY 01 / 90</span>
+                <span class="hero-remaining-stat" id="heroDaysRemaining">89 DAYS REMAINING</span>
+              </div>
+              <p class="hero-quote" id="heroMottoQuote">“Discipline is choosing what you want most over what you want now.”</p>
+            </div>
+
+            <!-- Mini Radial Quick Dial -->
+            <div class="hero-quick-dial">
+              <div class="quick-dial-ring">
+                <svg viewBox="0 0 100 100" class="mini-progress-svg">
+                  <circle cx="50" cy="50" r="42" class="ring-bg"></circle>
+                  <circle cx="50" cy="50" r="42" class="ring-fill" id="miniRingFill" style="stroke-dashoffset: 264;"></circle>
+                </svg>
+                <div class="quick-dial-center">
+                  <span class="quick-dial-pct" id="miniDialPercent">0%</span>
+                  <span class="quick-dial-label">TODAY</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PHASE PROGRESS BAR -->
+          <div class="arc-progress-bar-wrap">
+            <div class="arc-bar-labels">
+              <span>Day 1 (Foundation)</span>
+              <span id="arcPhaseLabel">Phase 1 of 3</span>
+              <span>Day 90 (Mastery)</span>
+            </div>
+            <div class="arc-bar-track">
+              <div class="arc-bar-fill" id="arcTotalBarFill" style="width: 1.1%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 ANIMATED STAT CARDS -->
+        <div class="stats-grid">
+          
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">CURRENT STREAK</span>
+              <span class="stat-icon-wrap streak-fire">🔥</span>
+            </div>
+            <div class="stat-card-body">
+              <div class="stat-card-value" id="statCurrentStreak">0 <span class="stat-unit">DAYS</span></div>
+              <div class="stat-subtext" id="statStreakSubtext">Keep the momentum going</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">TODAY'S COMPLETION</span>
+              <span class="stat-icon-wrap">📊</span>
+            </div>
+            <div class="stat-card-body">
+              <div class="stat-card-value" id="statTodayCompletion">0<span class="stat-unit">%</span></div>
+              <div class="stat-subtext" id="statTodayHabitRatio">0 / 12 habits done</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">HABITS LOGGED</span>
+              <span class="stat-icon-wrap">✅</span>
+            </div>
+            <div class="stat-card-body">
+              <div class="stat-card-value" id="statTotalHabitsDone">0</div>
+              <div class="stat-subtext" id="statHabitsTotalSubtext">Total across all days</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">GOALS COMPLETED</span>
+              <span class="stat-icon-wrap">🎯</span>
+            </div>
+            <div class="stat-card-body">
+              <div class="stat-card-value" id="statGoalsCompleted">0 <span class="stat-unit">/ 8</span></div>
+              <div class="stat-subtext" id="statGoalsSubtext">Discipline targets achieved</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- THE 6 DISCIPLINE PILLARS (From reference poster) -->
+        <div class="pillars-container">
+          <div class="pillar-card">
+            <div class="pillar-icon">🏋️</div>
+            <div class="pillar-title">PHYSICAL</div>
+            <div class="pillar-desc">A HEALTHIER ME</div>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon">🧠</div>
+            <div class="pillar-title">MENTAL</div>
+            <div class="pillar-desc">A CALMER ME</div>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon">📚</div>
+            <div class="pillar-title">ACADEMIC</div>
+            <div class="pillar-desc">A BRIGHTER ME</div>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon">💻</div>
+            <div class="pillar-title">SKILLS</div>
+            <div class="pillar-desc">A HIGHER VALUE ME</div>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon">⚙️</div>
+            <div class="pillar-title">DISCIPLINE</div>
+            <div class="pillar-desc">A STRONGER ME</div>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon">🏔️</div>
+            <div class="pillar-title">LIFE</div>
+            <div class="pillar-desc">A HAPPIER ME</div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ==================== 2. DAILY HABIT TRACKER ==================== -->
+      <section id="dailySection" class="content-section">
+        
+        <div class="section-header-split">
+          <div>
+            <div class="section-tag">CONSISTENT STEPS, BIG RESULTS</div>
+            <h2 class="section-title">TODAY'S DISCIPLINE</h2>
+          </div>
+
+          <!-- Date Navigation Controls -->
+          <div class="date-navigator">
+            <button id="btnPrevDay" class="date-nav-btn" title="Previous Day">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            </button>
+            <div class="active-date-display" id="activeDateDisplay">Thursday, Oct 1, 2026</div>
+            <button id="btnNextDay" class="date-nav-btn" title="Next Day">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+            </button>
+            <button id="btnTodayReset" class="btn-text-subtle" title="Jump to Today">TODAY</button>
+          </div>
+        </div>
+
+        <!-- VIEW SELECTOR: TODAY FOCUS vs WEEKLY MATRIX -->
+        <div class="tracker-view-controls">
+          <div class="view-toggle-pill">
+            <button id="btnViewToday" class="view-toggle-btn active" title="Single Day Focus">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+              <span>TODAY'S DISCIPLINE</span>
+            </button>
+            <button id="btnViewWeekly" class="view-toggle-btn" title="7-Day Table View">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
+              <span>WEEKLY MATRIX (MON–SUN)</span>
+            </button>
+          </div>
+          <span class="matrix-hint" id="matrixViewHint" style="display: none;">💡 <em>Check off habits directly for any day of the current week.</em></span>
+        </div>
+
+        <!-- DAILY LAYOUT: HABITS LIST + CIRCULAR PROGRESS GAUGE -->
+        <div class="daily-tracker-grid">
+
+          <!-- HABITS CHECKLIST / MATRIX -->
+          <div class="habits-column card-glass">
+            <div class="habits-column-header">
+              <span class="column-title" id="habitsColumnTitle">12 DAILY NON-NEGOTIABLES</span>
+              <span class="column-count" id="habitsCheckedCounter">0 / 12 COMPLETED</span>
+            </div>
+
+            <!-- Single Day List View -->
+            <div class="habits-list" id="habitsListContainer">
+              <!-- Dynamically populated via script.js -->
+            </div>
+
+            <!-- Weekly 7-Day Table Matrix View (Directly from Reference Poster) -->
+            <div class="weekly-matrix-wrap" id="weeklyMatrixWrap" style="display: none;">
+              <div class="matrix-table-scroll">
+                <table class="matrix-table" id="weeklyMatrixTable">
+                  <thead>
+                    <tr>
+                      <th class="matrix-th-habit">HABIT</th>
+                      <th class="matrix-th-day" data-weekday="1">MON</th>
+                      <th class="matrix-th-day" data-weekday="2">TUE</th>
+                      <th class="matrix-th-day" data-weekday="3">WED</th>
+                      <th class="matrix-th-day" data-weekday="4">THU</th>
+                      <th class="matrix-th-day" data-weekday="5">FRI</th>
+                      <th class="matrix-th-day" data-weekday="6">SAT</th>
+                      <th class="matrix-th-day" data-weekday="0">SUN</th>
+                    </tr>
+                  </thead>
+                  <tbody id="weeklyMatrixTbody">
+                    <!-- Populated dynamically via script.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- DAILY PROGRESS GAUGE, STREAK & 30-DAY BEADS -->
+          <div class="progress-gauge-column card-glass">
+            
+            <div class="gauge-card-header">
+              <span class="gauge-card-title">DAILY SCORE</span>
+              <span class="gauge-badge" id="gaugeStatusBadge">IN PROGRESS</span>
+            </div>
+
+            <div class="circular-progress-wrap">
+              <svg class="progress-ring-svg" viewBox="0 0 200 200">
+                <!-- Background track -->
+                <circle cx="100" cy="100" r="82" class="ring-track-bg"></circle>
+                <!-- Glowing fill -->
+                <circle cx="100" cy="100" r="82" class="ring-track-fill" id="mainProgressCircle" style="stroke-dasharray: 515.2; stroke-dashoffset: 515.2;"></circle>
+              </svg>
+              <div class="progress-ring-center">
+                <span class="progress-large-num" id="mainProgressPercent">0%</span>
+                <span class="progress-large-label">TODAY'S PROGRESS</span>
+                <span class="progress-ratio-tag" id="mainProgressRatio">0 / 12 completed</span>
+              </div>
+            </div>
+
+            <!-- Day Completion Banner (Triggers upon 100%) -->
+            <div class="day-complete-banner" id="dayCompleteBanner" style="display: none;">
+              <div class="complete-crest">🔥</div>
+              <div class="complete-text-wrap">
+                <h3 class="complete-title">DAY COMPLETE 🔥</h3>
+                <p class="complete-sub">All 12 disciplines executed. You showed up today.</p>
+              </div>
+            </div>
+
+            <!-- 30-Day Circular Habit Streak Matrix (Directly from Reference Poster) -->
+            <div class="poster-streak-box">
+              <div class="streak-beads-header">
+                <div class="streak-beads-title-wrap">
+                  <span class="streak-beads-flame">🔥</span>
+                  <span class="streak-beads-title">HABIT STREAK</span>
+                </div>
+                <span class="streak-beads-sub">KEEP THE STREAK ALIVE</span>
+              </div>
+              <div class="streak-beads-grid" id="posterStreakBeadsGrid">
+                <!-- 30 Numbered Circles (1 to 30) for the active phase -->
+              </div>
+            </div>
+
+            <!-- Streak summary metrics -->
+            <div class="streak-micro-card">
+              <div class="micro-row">
+                <span class="micro-label">CURRENT STREAK</span>
+                <span class="micro-val gold-accent" id="microCurrentStreak">0 Days</span>
+              </div>
+              <div class="micro-row">
+                <span class="micro-label">BEST STREAK</span>
+                <span class="micro-val" id="microBestStreak">0 Days</span>
+              </div>
+              <div class="micro-row">
+                <span class="micro-label">TOTAL 100% DAYS</span>
+                <span class="micro-val" id="microCompletedDays">0 Days</span>
+              </div>
+              <div class="micro-row">
+                <span class="micro-label">ARC AVERAGE</span>
+                <span class="micro-val" id="microAverageScore">0%</span>
+              </div>
+            </div>
+
+            <!-- Motivational Quote Card -->
+            <div class="quote-card-subtle">
+              <p class="quote-text luxury-calligraphy">“Discipline today, A Better Tomorrow”</p>
+              <span class="quote-author">— Winter Arc Creed</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ==================== 3. PRIORITIES, GRATITUDE & SCRATCHPAD ==================== -->
+      <section class="content-section">
+        <div class="three-column-grid">
+
+          <!-- TODAY'S PRIORITIES -->
+          <div class="sub-panel card-glass" id="prioritiesCard">
+            <div class="sub-panel-header">
+              <div class="panel-icon-wrap">⭐</div>
+              <div>
+                <h3 class="panel-title">TODAY'S PRIORITIES</h3>
+                <p class="panel-sub">Top 3 needle-moving objectives</p>
+              </div>
+            </div>
+
+            <div class="priorities-list" id="prioritiesList">
+              <!-- Priority 01 -->
+              <div class="priority-item" data-index="0">
+                <label class="custom-chk">
+                  <input type="checkbox" class="chk-priority" id="priChk0">
+                  <span class="chk-box"></span>
+                </label>
+                <input type="text" class="priority-input" id="priText0" placeholder="Priority 01: Deep study session..." maxlength="80">
+                <button class="clear-item-btn" title="Clear Priority" data-clear="0">&times;</button>
+              </div>
+
+              <!-- Priority 02 -->
+              <div class="priority-item" data-index="1">
+                <label class="custom-chk">
+                  <input type="checkbox" class="chk-priority" id="priChk1">
+                  <span class="chk-box"></span>
+                </label>
+                <input type="text" class="priority-input" id="priText1" placeholder="Priority 02: Build core feature..." maxlength="80">
+                <button class="clear-item-btn" title="Clear Priority" data-clear="1">&times;</button>
+              </div>
+
+              <!-- Priority 03 -->
+              <div class="priority-item" data-index="2">
+                <label class="custom-chk">
+                  <input type="checkbox" class="chk-priority" id="priChk2">
+                  <span class="chk-box"></span>
+                </label>
+                <input type="text" class="priority-input" id="priText2" placeholder="Priority 03: Heavy leg day workout..." maxlength="80">
+                <button class="clear-item-btn" title="Clear Priority" data-clear="2">&times;</button>
+              </div>
+            </div>
+
+            <div class="panel-save-indicator" id="priSaveIndicator">Auto-saved to browser</div>
+          </div>
+
+          <!-- GRATITUDE SECTION -->
+          <div class="sub-panel card-glass" id="gratitudeCard">
+            <div class="sub-panel-header">
+              <div class="panel-icon-wrap">🌱</div>
+              <div>
+                <h3 class="panel-title">TODAY I'M GRATEFUL FOR</h3>
+                <p class="panel-sub">Calm mind & grounded perspective</p>
+              </div>
+            </div>
+
+            <div class="gratitude-inputs">
+              <div class="gratitude-row">
+                <span class="gratitude-num">01</span>
+                <input type="text" class="gratitude-input" id="gratitudeInput0" placeholder="Morning stillness and clear focus...">
+              </div>
+              <div class="gratitude-row">
+                <span class="gratitude-num">02</span>
+                <input type="text" class="gratitude-input" id="gratitudeInput1" placeholder="Having good health and energy...">
+              </div>
+              <div class="gratitude-row">
+                <span class="gratitude-num">03</span>
+                <input type="text" class="gratitude-input" id="gratitudeInput2" placeholder="Another chance to outwork my excuses...">
+              </div>
+            </div>
+
+            <div class="panel-save-indicator" id="gratSaveIndicator">Saved automatically</div>
+          </div>
+
+          <!-- DAILY SCRATCHPAD / QUICK NOTES -->
+          <div class="sub-panel card-glass" id="scratchpadCard">
+            <div class="sub-panel-header">
+              <div class="panel-icon-wrap">✏️</div>
+              <div>
+                <h3 class="panel-title">NOTES / THOUGHTS</h3>
+                <p class="panel-sub">Quick mental clarity notes for today</p>
+              </div>
+            </div>
+
+            <div class="scratchpad-body">
+              <textarea id="dailyQuickNotes" class="scratchpad-textarea" placeholder="Key insights, workout PRs, or ideas captured throughout the day..."></textarea>
+            </div>
+
+            <div class="panel-save-indicator" id="notesSaveIndicator">Saved automatically</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==================== 4. 90-DAY CALENDAR & STREAK MATRIX ==================== -->
+      <section id="calendarSection" class="content-section">
+        <div class="section-header-split">
+          <div>
+            <div class="section-tag">90-DAY MISSION MAP</div>
+            <h2 class="section-title">THE 90-DAY CALENDAR</h2>
+          </div>
+          <div class="calendar-legend">
+            <span class="legend-item"><span class="legend-dot status-completed"></span> Completed (100%)</span>
+            <span class="legend-item"><span class="legend-dot status-partial"></span> Partial (≥50%)</span>
+            <span class="legend-item"><span class="legend-dot status-missed"></span> Low (&lt;50%)</span>
+            <span class="legend-item"><span class="legend-dot status-current"></span> Today</span>
+            <span class="legend-item"><span class="legend-dot status-future"></span> Future</span>
+          </div>
+        </div>
+
+        <!-- 3-Phase Calendar Cards -->
+        <div class="phases-calendar-wrap card-glass">
+          
+          <!-- Phase tabs -->
+          <div class="phase-tabs-header">
+            <button class="phase-tab-btn active" data-phase="1">
+              <span class="phase-tab-num">PHASE 01</span>
+              <span class="phase-tab-name">BUILD THE FOUNDATION</span>
+              <span class="phase-tab-days">Days 1 – 30</span>
+            </button>
+            <button class="phase-tab-btn" data-phase="2">
+              <span class="phase-tab-num">PHASE 02</span>
+              <span class="phase-tab-name">BUILD CONSISTENCY</span>
+              <span class="phase-tab-days">Days 31 – 60</span>
+            </button>
+            <button class="phase-tab-btn" data-phase="3">
+              <span class="phase-tab-num">PHASE 03</span>
+              <span class="phase-tab-name">BECOME THE STANDARD</span>
+              <span class="phase-tab-days">Days 61 – 90</span>
+            </button>
+          </div>
+
+          <!-- The 30 / 90 Days Grid Container -->
+          <div class="calendar-grid-container" id="calendarDaysGrid">
+            <!-- Dynamically generated 30 days of the active phase or all 90 -->
+          </div>
+
+          <div class="calendar-footer-info">
+            <p class="cal-footer-text">💡 <em>Click any past or present day to view or edit that day's habit completion status.</em></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 5. MONTHLY & WEEKLY GOALS ==================== -->
+      <section id="goalsSection" class="content-section">
+        
+        <div class="section-header-split">
+          <div>
+            <div class="section-tag">TARGETS & MILESTONES</div>
+            <h2 class="section-title">DISCIPLINE GOALS</h2>
+          </div>
+          <button id="btnOpenAddGoalModal" class="btn btn-gold btn-sm">
+            <span class="btn-text">+ Add Custom Goal</span>
+          </button>
+        </div>
+
+        <div class="goals-grid">
+          
+          <!-- MONTHLY GOALS CARD -->
+          <div class="goals-column card-glass">
+            <div class="goals-col-header">
+              <div>
+                <h3 class="col-title">MONTHLY GOALS</h3>
+                <span class="col-sub" id="monthlyGoalsSubtitle">ARC TARGETS · MONTH 01</span>
+              </div>
+              <span class="goals-pill-badge" id="goalsCompletionBadge">0 / 8 DONE</span>
+            </div>
+
+            <div class="goals-list" id="monthlyGoalsList">
+              <!-- Populated by script.js -->
+            </div>
+
+            <div class="quote-script-footer">
+              “Discipline today, A Better Tomorrow”
+            </div>
+          </div>
+
+          <!-- WEEKLY GOALS & CHECKPOINTS -->
+          <div class="weekly-goals-column card-glass">
+            <div class="goals-col-header">
+              <div>
+                <h3 class="col-title">WEEKLY GOALS</h3>
+                <span class="col-sub">Sprint targets for this 7-day cycle</span>
+              </div>
+              <select id="weeklySelectDropdown" class="luxury-select">
+                <option value="1">Week 01</option>
+                <option value="2">Week 02</option>
+                <option value="3">Week 03</option>
+                <option value="4">Week 04</option>
+                <option value="5">Week 05</option>
+                <option value="6">Week 06</option>
+                <option value="7">Week 07</option>
+                <option value="8">Week 08</option>
+                <option value="9">Week 09</option>
+                <option value="10">Week 10</option>
+                <option value="11">Week 11</option>
+                <option value="12">Week 12</option>
+                <option value="13">Week 13</option>
+              </select>
+            </div>
+
+            <div class="weekly-goals-list" id="weeklyGoalsList">
+              <!-- Dynamically populated -->
+            </div>
+
+            <div class="add-weekly-item-form">
+              <input type="text" id="newWeeklyGoalInput" class="weekly-input" placeholder="Add specific target for this week...">
+              <button id="btnAddWeeklyGoal" class="btn btn-outline btn-sm">Add</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==================== 6. PROGRESS ANALYTICS ==================== -->
+      <section id="analyticsSection" class="content-section">
+        
+        <div class="section-header-split">
+          <div>
+            <div class="section-tag">PERFORMANCE METRICS</div>
+            <h2 class="section-title">PROGRESS ANALYTICS</h2>
+          </div>
+
+          <!-- Time Range Filter Tabs -->
+          <div class="analytics-tabs">
+            <button class="analytics-tab-btn active" data-range="7">7 DAYS</button>
+            <button class="analytics-tab-btn" data-range="30">30 DAYS</button>
+            <button class="analytics-tab-btn" data-range="90">90 DAYS</button>
+          </div>
+        </div>
+
+        <div class="analytics-card card-glass">
+          
+          <!-- Key Metric Stats Strip -->
+          <div class="analytics-metrics-strip">
+            <div class="metric-block">
+              <span class="metric-label">COMPLETION RATE</span>
+              <span class="metric-val" id="analyticsAvgRate">0%</span>
+            </div>
+            <div class="metric-block">
+              <span class="metric-label">HABITS COMPLETED</span>
+              <span class="metric-val" id="analyticsHabitsCount">0</span>
+            </div>
+            <div class="metric-block">
+              <span class="metric-label">BEST STREAK</span>
+              <span class="metric-val" id="analyticsBestStreak">0 Days</span>
+            </div>
+            <div class="metric-block">
+              <span class="metric-label">ACTIVE DAYS</span>
+              <span class="metric-val" id="analyticsActiveDays">0 / 7</span>
+            </div>
+            <div class="metric-block">
+              <span class="metric-label">AVERAGE DAILY SCORE</span>
+              <span class="metric-val" id="analyticsDailyScore">0%</span>
+            </div>
+          </div>
+
+          <!-- Interactive HTML5 Canvas Chart -->
+          <div class="chart-wrapper">
+            <canvas id="analyticsCanvas" class="analytics-canvas" height="320"></canvas>
+            <div id="chartTooltip" class="chart-tooltip" style="display: none;"></div>
+          </div>
+
+          <div class="chart-legend">
+            <span class="chart-legend-indicator"></span>
+            <span>Daily Habit Completion Score (% of 12 habits achieved)</span>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ==================== 7. DAILY JOURNAL & WEEKLY REVIEW ==================== -->
+      <section id="journalSection" class="content-section">
+        
+        <div class="section-header-split">
+          <div>
+            <div class="section-tag">MINDSET & REFLECTION</div>
+            <h2 class="section-title">JOURNAL & REVIEW</h2>
+          </div>
+        </div>
+
+        <div class="journal-review-grid">
+
+          <!-- DAILY JOURNAL ENTRY -->
+          <div class="journal-card card-glass">
+            <div class="journal-card-header">
+              <div>
+                <h3 class="card-title">DAILY JOURNAL</h3>
+                <span class="card-sub" id="journalDateLabel">Entries for today</span>
+              </div>
+              <span class="word-counter" id="journalWordCount">0 words</span>
+            </div>
+
+            <div class="journal-body">
+              <textarea id="journalTextarea" class="luxury-textarea" placeholder="“What's on your mind today?”
+
+Reflect on your struggles, breakthroughs, wins, and the discipline it took to conquer today..." rows="9"></textarea>
+            </div>
+
+            <div class="journal-actions">
+              <span class="save-status-text" id="journalSaveStatus">All changes saved locally</span>
+              <button id="btnSaveJournal" class="btn btn-gold btn-sm">Save Journal Entry</button>
+            </div>
+
+            <!-- JOURNAL TIMELINE HISTORY -->
+            <div class="journal-history-section">
+              <div class="timeline-header">
+                <span class="timeline-title">PREVIOUS JOURNAL ENTRIES</span>
+              </div>
+              <div class="journal-timeline" id="journalTimelineContainer">
+                <!-- Populated via script.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- WEEKLY REVIEW REFLECTION -->
+          <div class="review-card card-glass">
+            <div class="review-card-header">
+              <div>
+                <h3 class="card-title">WEEKLY REVIEW</h3>
+                <span class="card-sub">Sunday audit & continuous iteration</span>
+              </div>
+              <select id="reviewWeekSelect" class="luxury-select">
+                <option value="1">Week 01</option>
+                <option value="2">Week 02</option>
+                <option value="3">Week 03</option>
+                <option value="4">Week 04</option>
+                <option value="5">Week 05</option>
+                <option value="6">Week 06</option>
+                <option value="7">Week 07</option>
+                <option value="8">Week 08</option>
+                <option value="9">Week 09</option>
+                <option value="10">Week 10</option>
+                <option value="11">Week 11</option>
+                <option value="12">Week 12</option>
+                <option value="13">Week 13</option>
+              </select>
+            </div>
+
+            <div class="review-questions">
+              
+              <div class="review-q-group">
+                <label class="review-q-label">1. Did I stay consistent this week?</label>
+                <div class="consistency-toggle-row">
+                  <label class="radio-label">
+                    <input type="radio" name="chkConsistent" value="yes" id="revConsYes">
+                    <span class="radio-custom"></span> Yes, executed relentlessly
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="chkConsistent" value="partial" id="revConsPart">
+                    <span class="radio-custom"></span> Partially (Need tighter focus)
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="chkConsistent" value="no" id="revConsNo">
+                    <span class="radio-custom"></span> No (Reset and rebuild)
+                  </label>
+                </div>
+              </div>
+
+              <div class="review-q-group">
+                <label class="review-q-label" for="revWentWell">2. What went well this week?</label>
+                <textarea id="revWentWell" class="review-input-area" placeholder="Habits kept, workouts crushed, deep work milestones hit..." rows="2"></textarea>
+              </div>
+
+              <div class="review-q-group">
+                <label class="review-q-label" for="revImprove">3. What could I improve?</label>
+                <textarea id="revImprove" class="review-input-area" placeholder="Dopamine traps, missed alarms, friction points to remove..." rows="2"></textarea>
+              </div>
+
+              <div class="review-q-group">
+                <label class="review-q-label" for="revNextFocus">4. What will I focus on next week?</label>
+                <textarea id="revNextFocus" class="review-input-area" placeholder="Specific non-negotiables for the upcoming 7 days..." rows="2"></textarea>
+              </div>
+
+            </div>
+
+            <div class="review-footer">
+              <span class="save-status-text" id="reviewSaveStatus">Responses saved automatically</span>
+              <button id="btnSaveWeeklyReview" class="btn btn-outline btn-sm">Save Weekly Review</button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ==================== 8. CINEMATIC MOTIVATION BANNER ==================== -->
+      <section class="content-section motivation-section">
+        <div class="motivation-banner card-glass">
+          <div class="motivation-overlay"></div>
+          <div class="motivation-content">
+            <span class="motivation-tag">THE WINTER ARC PRINCIPLE</span>
+            <blockquote class="motivation-quote">
+              “Discipline is choosing what you want most over what you want now.”
+            </blockquote>
+            <div class="motivation-headline">
+              <span class="mot-line">SAME YOU.</span>
+              <span class="mot-line gold-accent">STRONGER VERSION.</span>
+            </div>
+            <p class="motivation-creed">
+              “Discipline turns ordinary days into extraordinary results.”
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 9. SETTINGS & LOCAL DATA ==================== -->
+      <section id="settingsSection" class="content-section">
+        
+        <div class="section-header-split">
+          <div>
+            <div class="section-tag">PREFERENCES & DATA PRIVACY</div>
+            <h2 class="section-title">SETTINGS</h2>
+          </div>
+        </div>
+
+        <div class="settings-grid">
+          
+          <!-- PROFILE SETTINGS CARD -->
+          <div class="settings-card card-glass">
+            <div class="settings-card-header">
+              <h3 class="card-title">PROFILE INFORMATION</h3>
+              <span class="card-sub">Your local arc identity</span>
+            </div>
+
+            <form id="settingsProfileForm" class="settings-form">
+              <div class="form-group">
+                <label for="settingName" class="form-label">Full Name / Callsign</label>
+                <input type="text" id="settingName" class="form-input" required maxlength="40">
+              </div>
+
+              <div class="form-group">
+                <label for="settingStartDate" class="form-label">Winter Arc Start Date</label>
+                <input type="date" id="settingStartDate" class="form-input" required>
+                <span class="input-helper">Day 01 begins on this date. Day 90 is 89 days after.</span>
+              </div>
+
+              <div class="form-group">
+                <label for="settingGoal" class="form-label">Main Winter Arc Goal</label>
+                <textarea id="settingGoal" class="form-input form-textarea" rows="3" required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-gold btn-sm">Update Profile</button>
+            </form>
+          </div>
+
+          <!-- DATA BACKUP, EXPORT & IMPORT -->
+          <div class="settings-card card-glass">
+            <div class="settings-card-header">
+              <h3 class="card-title">LOCAL STORAGE DATA</h3>
+              <span class="card-sub">Export, Import & Reset</span>
+            </div>
+
+            <div class="storage-notice-box">
+              <div class="notice-icon">🔒</div>
+              <div class="notice-body">
+                <strong>Pure Local Sovereignty</strong>
+                <p>“Your data is stored locally in this browser.” No servers, no tracking, completely offline functional.</p>
+              </div>
+            </div>
+
+            <div class="data-actions-stack">
+              <div class="action-row">
+                <div class="action-meta">
+                  <span class="action-title">Export Backup</span>
+                  <span class="action-desc">Download a complete .JSON backup of your habits, streak, and journal.</span>
+                </div>
+                <button id="btnExportData" class="btn btn-outline btn-sm">
+                  <svg class="action-btn-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                  Export .JSON
+                </button>
+              </div>
+
+              <div class="action-row">
+                <div class="action-meta">
+                  <span class="action-title">Import Backup</span>
+                  <span class="action-desc">Restore your Winter Arc data onto any other device or browser.</span>
+                </div>
+                <label class="btn btn-outline btn-sm file-input-label">
+                  <svg class="action-btn-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+                  Import Backup
+                  <input type="file" id="importFileInput" accept=".json" style="display: none;">
+                </label>
+              </div>
+
+              <!-- DANGER ZONE -->
+              <div class="danger-zone-box">
+                <div class="action-meta">
+                  <span class="danger-title">Reset My Data</span>
+                  <span class="action-desc">Permanently wipe all habits, goals, and journal records from this browser.</span>
+                </div>
+                <button id="btnResetDataModal" class="btn btn-danger btn-sm">Reset Data</button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <svg class="footer-crown" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 18h18l-2-10-4 4-3-6-3 6-4-4L3 18z"/>
+          </svg>
+          <span class="footer-brand-title">SAI — WINTER ARC 2026</span>
+        </div>
+        <div class="footer-tagline">90 DAYS · ONE MISSION · NO EXCUSES</div>
+        <div class="footer-keywords">
+          BETTER HABITS &nbsp;|&nbsp; CLEARER MIND &nbsp;|&nbsp; HIGHER GOALS &nbsp;|&nbsp; A STRONGER SAI
+        </div>
+        <div class="footer-offline-badge">
+          <span class="pulse-green-dot"></span> 100% Client-Side · Private Local Storage
+        </div>
+      </div>
+    </footer>
+
+    <!-- MOBILE BOTTOM NAVIGATION BAR -->
+    <nav class="mobile-bottom-nav" id="mobileBottomNav">
+      <a href="#dashboardSection" class="mobile-nav-link active" data-section="dashboardSection">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="3" y="3" width="7" height="9"/>
+          <rect x="14" y="3" width="7" height="5"/>
+          <rect x="14" y="12" width="7" height="9"/>
+          <rect x="3" y="16" width="7" height="5"/>
+        </svg>
+        <span>Home</span>
+      </a>
+
+      <a href="#dailySection" class="mobile-nav-link" data-section="dailySection">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+        </svg>
+        <span>Daily</span>
+      </a>
+
+      <a href="#goalsSection" class="mobile-nav-link" data-section="goalsSection">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="6"/>
+          <circle cx="12" cy="12" r="2"/>
+        </svg>
+        <span>Goals</span>
+      </a>
+
+      <a href="#calendarSection" class="mobile-nav-link" data-section="calendarSection">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span>Calendar</span>
+      </a>
+
+      <a href="#journalSection" class="mobile-nav-link" data-section="journalSection">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M12 20h9"/>
+          <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+        </svg>
+        <span>Journal</span>
+      </a>
+
+      <a href="#settingsSection" class="mobile-nav-link" data-section="settingsSection">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+        </svg>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. PROFILE SETUP / ONBOARDING MODAL -->
+  <div id="profileSetupModal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="setupModalTitle">
+    <div class="modal-card card-glass">
+      
+      <div class="modal-header">
+        <div class="modal-crest">👑</div>
+        <h2 id="setupModalTitle" class="modal-title">CREATE YOUR PROFILE</h2>
+        <p class="modal-subtitle">Initiate your 90-day discipline transformation</p>
+      </div>
+
+      <form id="onboardingForm" class="modal-form">
+        <div class="form-group">
+          <label for="setupName" class="form-label">Your Name / Callsign</label>
+          <input type="text" id="setupName" class="form-input" placeholder="e.g. Sai" required autofocus>
+        </div>
+
+        <div class="form-group">
+          <label for="setupStartDate" class="form-label">Winter Arc Start Date</label>
+          <input type="date" id="setupStartDate" class="form-input" required>
+          <span class="input-helper">When does (or did) your 90-day arc begin?</span>
+        </div>
+
+        <div class="form-group">
+          <label for="setupGoal" class="form-label">Main Mission & Goal</label>
+          <textarea id="setupGoal" class="form-input form-textarea" rows="3" placeholder="e.g. Become unbreakable in physical fitness, master coding skills, and achieve razor-sharp mental clarity." required></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-gold btn-glow w-100">
+            <span class="btn-text">BEGIN THE ARC</span>
+            <svg class="btn-icon" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+        </div>
+      </form>
+
+      <div class="modal-footer-notice">
+        <span>🔒 Your data is stored locally in this browser.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 2. ADD CUSTOM GOAL MODAL -->
+  <div id="addGoalModal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true">
+    <div class="modal-card card-glass modal-sm">
+      <div class="modal-header">
+        <h3 class="modal-title">ADD CUSTOM GOAL</h3>
+        <button class="modal-close-btn" id="btnCloseGoalModal">&times;</button>
+      </div>
+
+      <form id="addGoalForm" class="modal-form">
+        <div class="form-group">
+          <label for="newGoalTitle" class="form-label">Goal Description</label>
+          <input type="text" id="newGoalTitle" class="form-input" placeholder="e.g. Run 100km total this month" required maxlength="100">
+        </div>
+
+        <div class="form-group">
+          <label for="newGoalCategory" class="form-label">Pillar Category</label>
+          <select id="newGoalCategory" class="luxury-select w-100">
+            <option value="Physical">Physical</option>
+            <option value="Mental">Mental</option>
+            <option value="Academic">Academic</option>
+            <option value="Skills">Skills</option>
+            <option value="Discipline">Discipline</option>
+            <option value="Life">Life</option>
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-gold w-100">Save Goal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. DAY INSPECT MODAL (From clicking Calendar) -->
+  <div id="dayInspectModal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true">
+    <div class="modal-card card-glass">
+      <div class="modal-header">
+        <div class="modal-crest" id="inspectDayNumberBadge">DAY 01</div>
+        <h3 class="modal-title" id="inspectDayTitle">October 1, 2026</h3>
+        <p class="modal-subtitle" id="inspectDayScore">Score: 0 / 12 (0%)</p>
+        <button class="modal-close-btn" id="btnCloseInspectModal">&times;</button>
+      </div>
+
+      <div class="inspect-body">
+        <div class="inspect-habits-list" id="inspectHabitsList">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btnJumpToInspectDay" class="btn btn-gold btn-sm w-100">Go to this day's tracker</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. RESET DATA CONFIRMATION MODAL -->
+  <div id="resetConfirmModal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true">
+    <div class="modal-card card-glass modal-sm">
+      <div class="modal-header danger-header">
+        <div class="modal-crest">⚠️</div>
+        <h3 class="modal-title">RESET ALL ARC DATA?</h3>
+        <p class="modal-subtitle">This action is irreversible. All habits, streaks, goals, and journal reflections will be erased permanently from this browser.</p>
+        <button class="modal-close-btn" id="btnCloseResetModal">&times;</button>
+      </div>
+
+      <div class="reset-prompt-box">
+        <label for="resetConfirmInput" class="form-label">Type <strong>RESET</strong> to confirm:</label>
+        <input type="text" id="resetConfirmInput" class="form-input" placeholder="RESET" autocomplete="off">
+      </div>
+
+      <div class="modal-actions">
+        <button id="btnConfirmReset" class="btn btn-danger w-100" disabled>Permanently Wipe Data</button>
+        <button id="btnCancelReset" class="btn btn-outline w-100">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
