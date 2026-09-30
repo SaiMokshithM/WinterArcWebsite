@@ -3107,43 +3107,60 @@ body::after {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: rgba(5, 7, 10, 0.95);
+  background: rgba(5, 8, 14, 0.95);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  border-top: 1px solid var(--border-subtle);
-  padding: 0.45rem 0.4rem calc(0.45rem + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid rgba(229, 195, 120, 0.22);
+  box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.75);
+  padding: 0.4rem 0.2rem calc(0.45rem + env(safe-area-inset-bottom, 0px));
   z-index: 300;
   justify-content: space-around;
   align-items: center;
+  transform: translateZ(0);
 }
 
 .mobile-nav-link {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 2px;
   color: var(--text-muted);
   text-decoration: none;
-  font-size: 0.62rem;
-  font-weight: 500;
-  padding: 3px 4px;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 4px 2px;
+  border-radius: var(--radius-xs);
   transition: all var(--transition-fast);
   flex: 1;
   text-align: center;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: 46px;
 }
 
 .mobile-nav-link svg {
   width: 20px;
   height: 20px;
+  flex-shrink: 0;
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.mobile-nav-link:active {
+  transform: scale(0.92);
 }
 
 .mobile-nav-link.active {
   color: var(--gold-light);
+  background: rgba(229, 195, 120, 0.09);
 }
 
 .mobile-nav-link.active svg {
   color: var(--gold-primary);
-  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.4));
+  transform: translateY(-1px);
+  filter: drop-shadow(0 0 8px rgba(229, 195, 120, 0.65));
 }
 
 /* ==========================================================================
@@ -3292,118 +3309,7 @@ body::after {
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN (All Screen Widths)
-   ========================================================================== */
-@media (max-width: 1024px) {
-  .daily-tracker-grid,
-  .goals-grid,
-  .journal-review-grid,
-  .settings-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .nav-links {
-    display: none;
-  }
-
-  .mobile-bottom-nav {
-    display: flex;
-  }
-
-  .main-content {
-    padding-bottom: 7rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero-main-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .hero-quick-dial {
-    align-self: center;
-    margin-top: 1rem;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .phase-tabs-header {
-    grid-template-columns: 1fr;
-  }
-
-  .three-column-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .dashboard-hero-card {
-    padding: 1.5rem;
-  }
-
-  .section-header-split {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .date-navigator {
-    width: 100%;
-    justify-content: space-between;
-  }
-}
-
-@media (max-width: 480px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .landing-brand-title .brand-name {
-    font-size: 3rem;
-  }
-
-  .landing-cta-group {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .landing-cta-group .btn {
-    width: 100%;
-  }
-
-  .hero-greeting {
-    font-size: 1.8rem;
-  }
-
-  .card-glass {
-    padding: 1.25rem;
-  }
-
-  .calendar-grid-container {
-    grid-template-columns: repeat(5, 1fr);
-  }
-}
-
-/* ==========================================================================
-   ACCESSIBILITY: PREFERS REDUCED MOTION
-   ========================================================================== */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
-
-  .snow-canvas {
-    display: none !important;
-  }
-}
-
-/* ==========================================================================
-   OFFICIAL 92-DAY WINTER ARC CERTIFICATE & CELEBRATION STYLES
+   OFFICIAL 92-DAY WINTER ARC CERTIFICATE & CELEBRATION STYLES (Desktop Base)
    ========================================================================== */
 .btn-cert-badge {
   display: inline-flex;
@@ -3778,6 +3684,1127 @@ body::after {
   gap: 1rem;
   margin-top: 1.2rem;
   flex-wrap: wrap;
+}
+   ========================================================================== */
+
+/* Touch interactions and mobile hygiene */
+@media (hover: none) and (pointer: coarse) {
+  button, a, input, select, textarea, .habit-row, .cal-day-cell, .streak-bead, .stat-card {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+}
+
+/* --- TABLET & BELOW (<= 1024px) --- */
+@media (max-width: 1024px) {
+  .daily-tracker-grid,
+  .goals-grid,
+  .journal-review-grid,
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-links {
+    display: none !important;
+  }
+
+  .mobile-bottom-nav {
+    display: flex !important;
+  }
+
+  .main-content {
+    padding-bottom: calc(6rem + env(safe-area-inset-bottom, 12px));
+  }
+}
+
+/* --- MOBILE PHONES & PHABLETS (<= 768px) --- */
+@media (max-width: 768px) {
+  /* Prevent iOS Safari input zoom */
+  input, select, textarea,
+  .form-input, .priority-input, .gratitude-input, .weekly-input,
+  .luxury-select, .luxury-textarea, .scratchpad-textarea, .review-input-area {
+    font-size: 16px !important;
+  }
+
+  /* Global safe layout */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  /* Top Navigation */
+  .top-nav {
+    padding-top: max(0.5rem, env(safe-area-inset-top, 0px));
+  }
+
+  .nav-inner {
+    padding: 0.55rem 0.85rem;
+    gap: 0.5rem;
+  }
+
+  .nav-brand {
+    gap: 0.5rem;
+  }
+
+  .nav-crown {
+    width: 22px;
+    height: 22px;
+  }
+
+  .brand-text-wrap {
+    font-size: 0.88rem;
+    letter-spacing: 0.12em;
+    gap: 0.35rem;
+  }
+
+  .brand-thin {
+    display: none;
+  }
+
+  .brand-sep {
+    display: none;
+  }
+
+  .nav-day-badge {
+    font-size: 0.62rem;
+    padding: 2px 7px;
+    letter-spacing: 0.1em;
+  }
+
+  .user-pill-name {
+    display: none;
+  }
+
+  .user-pill-btn {
+    padding: 2px;
+    border-radius: var(--radius-full);
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+  }
+
+  .user-avatar-initial {
+    width: 26px;
+    height: 26px;
+    font-size: 0.75rem;
+  }
+
+  .nav-actions {
+    gap: 0.4rem;
+  }
+
+  .icon-btn {
+    width: 34px;
+    height: 34px;
+    padding: 6px;
+  }
+
+  /* Mobile Bottom Navigation */
+  .mobile-bottom-nav {
+    display: flex !important;
+    padding: 0.35rem 0.15rem max(0.4rem, env(safe-area-inset-bottom, 6px));
+  }
+
+  .mobile-nav-link {
+    font-size: 0.56rem;
+    padding: 3px 1px;
+    min-height: 44px;
+  }
+
+  .mobile-nav-link svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  /* Main Container */
+  .main-content {
+    padding: 1.15rem 0.85rem calc(5.5rem + env(safe-area-inset-bottom, 12px));
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Section Headers */
+  .section-header-split {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    margin-bottom: 1.15rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.45rem, 5vw, 1.9rem);
+  }
+
+  .section-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+  }
+
+  /* Landing Screen */
+  .landing-screen {
+    padding: max(1.75rem, env(safe-area-inset-top, 0px)) 1.15rem max(2rem, env(safe-area-inset-bottom, 0px));
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .landing-content {
+    gap: 1.15rem;
+  }
+
+  .crown-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .landing-brand-title .brand-name {
+    font-size: clamp(2.4rem, 11vw, 4.2rem);
+    letter-spacing: 0.16em;
+  }
+
+  .landing-brand-title .brand-arc {
+    font-size: clamp(1.6rem, 7vw, 2.4rem);
+  }
+
+  .script-accent {
+    font-size: clamp(1.6rem, 6.5vw, 2.1rem);
+  }
+
+  .landing-subtitle {
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+  }
+
+  .landing-description {
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  .landing-quote {
+    font-size: 0.92rem;
+  }
+
+  .landing-pillars-preview {
+    gap: 0.35rem 0.5rem;
+    font-size: 0.64rem;
+  }
+
+  .pillar-chip {
+    padding: 2px 7px;
+  }
+
+  .landing-cta-group {
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+
+  .landing-cta-group .btn {
+    width: 100%;
+    padding: 0.85rem 1.25rem;
+    font-size: 0.82rem;
+    min-height: 48px;
+  }
+
+  .landing-footer-tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    margin-top: 1rem;
+  }
+
+  /* 1. Dashboard Overview */
+  .dashboard-hero-card {
+    padding: 1.25rem 1rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1.15rem;
+  }
+
+  .hero-top-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .hero-meta {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+  }
+
+  .hero-date-display {
+    font-size: 0.78rem;
+  }
+
+  .hero-main-row {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.15rem;
+  }
+
+  .hero-headline-wrap {
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero-greeting {
+    font-size: 1.75rem;
+    text-align: center;
+    line-height: 1.15;
+  }
+
+  .hero-counter-wrap {
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+  }
+
+  .hero-day-stat {
+    font-size: 1.25rem;
+  }
+
+  .hero-remaining-stat {
+    font-size: 0.76rem;
+  }
+
+  .btn-cert-badge {
+    margin-left: 0;
+    font-size: 0.65rem;
+    padding: 3px 9px;
+  }
+
+  .hero-quote {
+    font-size: 0.88rem;
+    text-align: center;
+    margin: 0.65rem auto 0;
+  }
+
+  .hero-quick-dial {
+    align-self: center;
+    margin: 0.35rem 0;
+  }
+
+  .arc-progress-bar-wrap {
+    margin-top: 1.15rem;
+    padding-top: 0.95rem;
+  }
+
+  .arc-bar-labels {
+    font-size: 0.64rem;
+  }
+
+  /* Completion Celebration Banner */
+  .arc-complete-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.35rem 1rem;
+    gap: 1rem;
+  }
+
+  .complete-crest-lg {
+    font-size: 2.3rem;
+  }
+
+  .complete-title {
+    font-size: 1.05rem;
+  }
+
+  .complete-sub {
+    font-size: 0.78rem;
+  }
+
+  .arc-complete-banner .btn {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  /* 4 Stat Cards: Crisp 2x2 Grid */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+    margin-bottom: 1.15rem;
+  }
+
+  .stat-card {
+    padding: 0.95rem 0.85rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .stat-card-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+  }
+
+  .stat-icon-wrap {
+    font-size: 1rem;
+  }
+
+  .stat-card-value {
+    font-size: 1.6rem;
+  }
+
+  .stat-unit {
+    font-size: 0.82rem;
+  }
+
+  .stat-subtext {
+    font-size: 0.68rem;
+    margin-top: 0.25rem;
+  }
+
+  /* 6 Pillars: Sleek 2-Column Grid */
+  .pillars-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.55rem;
+    margin-bottom: 1.15rem;
+  }
+
+  .pillar-card {
+    padding: 0.85rem 0.55rem;
+  }
+
+  .pillar-icon {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .pillar-title {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+  }
+
+  .pillar-desc {
+    font-size: 0.62rem;
+  }
+
+  .motivation-banner {
+    padding: 1.15rem 0.95rem;
+    text-align: center;
+  }
+
+  .motivation-quote {
+    font-size: 0.92rem;
+  }
+
+  .mot-line {
+    font-size: 1.15rem;
+  }
+
+  .motivation-creed {
+    font-size: 0.82rem;
+  }
+
+  /* 2. Daily Habits Tracker */
+  .date-navigator {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 6px;
+    gap: 4px;
+  }
+
+  .date-nav-btn {
+    padding: 8px 10px;
+    min-width: 38px;
+    min-height: 38px;
+  }
+
+  .active-date-display {
+    min-width: 0;
+    flex: 1;
+    text-align: center;
+    font-size: 0.8rem;
+    padding: 0 4px;
+  }
+
+  #btnTodayReset {
+    padding: 6px 10px;
+    min-height: 34px;
+  }
+
+  .tracker-view-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+  }
+
+  .view-toggle-pill {
+    width: 100%;
+    display: flex;
+  }
+
+  .view-toggle-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 8px 4px;
+    font-size: 0.68rem;
+    text-align: center;
+    min-height: 38px;
+  }
+
+  .habits-column {
+    padding: 1.15rem 0.95rem;
+  }
+
+  .habits-column-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .habits-header-left {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .habits-header-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .habits-header-actions .btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.7rem;
+    padding: 8px 6px;
+    min-height: 38px;
+  }
+
+  .habit-row {
+    padding: 0.75rem 0.85rem;
+    gap: 0.65rem;
+    border-radius: var(--radius-xs);
+  }
+
+  .habit-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 1.15rem;
+  }
+
+  .habit-name {
+    font-size: 0.86rem;
+    line-height: 1.3;
+  }
+
+  .habit-desc {
+    font-size: 0.7rem;
+  }
+
+  .custom-checkbox {
+    width: 22px;
+    height: 22px;
+  }
+
+  .habit-remove-btn {
+    padding: 6px 8px;
+    min-height: 32px;
+  }
+
+  /* Circular Progress Gauge Column */
+  .progress-gauge-column {
+    padding: 1.35rem 1rem;
+  }
+
+  .circular-progress-wrap {
+    width: 175px;
+    height: 175px;
+    margin: 0.35rem auto 1rem;
+  }
+
+  .progress-large-num {
+    font-size: 2.1rem;
+  }
+
+  .streak-beads-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.4rem;
+  }
+
+  .streak-bead {
+    min-height: 36px;
+    font-size: 0.7rem;
+  }
+
+  .three-column-grid {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+    margin-top: 1.15rem;
+  }
+
+  .sub-panel {
+    padding: 1.15rem 0.95rem;
+  }
+
+  .priority-item {
+    padding: 0.65rem 0.8rem;
+    gap: 0.65rem;
+  }
+
+  /* 4. Calendar & 92-Day Matrix */
+  .calendar-legend {
+    gap: 0.35rem 0.75rem;
+    font-size: 0.68rem;
+    margin-top: 0.4rem;
+  }
+
+  .phases-calendar-wrap {
+    padding: 1.15rem 0.85rem;
+  }
+
+  .phase-tabs-header {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+  }
+
+  .phase-tab-btn {
+    padding: 0.55rem 0.25rem;
+    text-align: center;
+    border-radius: var(--radius-xs);
+  }
+
+  .phase-tab-num {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+  }
+
+  .phase-tab-name {
+    font-size: 0.68rem;
+    line-height: 1.2;
+    margin-top: 1px;
+  }
+
+  .phase-tab-days {
+    display: none;
+  }
+
+  .calendar-grid-container {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.4rem;
+  }
+
+  .cal-day-cell {
+    min-height: 48px;
+    border-radius: 4px;
+  }
+
+  .cal-day-num {
+    font-size: 0.75rem;
+  }
+
+  .cal-day-pct {
+    font-size: 0.55rem;
+  }
+
+  /* 5. Discipline Goals */
+  #btnOpenAddGoalModal {
+    width: 100%;
+    min-height: 42px;
+    justify-content: center;
+  }
+
+  .goals-grid {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+
+  .goals-column, .weekly-goals-column {
+    padding: 1.15rem 0.95rem;
+  }
+
+  .goals-col-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+  }
+
+  .monthly-header-actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .luxury-select {
+    flex: 1;
+    font-size: 16px;
+    padding: 7px 10px;
+    min-height: 38px;
+  }
+
+  .goal-item {
+    padding: 0.75rem 0.85rem;
+    gap: 0.65rem;
+  }
+
+  .goal-label {
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+
+  .add-weekly-item-form {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .weekly-input {
+    font-size: 16px;
+    padding: 9px 10px;
+  }
+
+  .add-weekly-item-form .btn {
+    width: 100%;
+    min-height: 40px;
+  }
+
+  /* 6. Progress Analytics */
+  .analytics-tabs {
+    width: 100%;
+    display: flex;
+    margin-top: 0.4rem;
+  }
+
+  .analytics-tab-btn {
+    flex: 1;
+    text-align: center;
+    padding: 8px 4px;
+    font-size: 0.7rem;
+    min-height: 38px;
+  }
+
+  .analytics-card {
+    padding: 1.15rem 0.95rem;
+  }
+
+  .analytics-metrics-strip {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .metric-val {
+    font-size: 1.35rem;
+  }
+
+  .metric-label {
+    font-size: 0.64rem;
+  }
+
+  .chart-wrapper {
+    height: 230px;
+  }
+
+  /* 7. Journal & Weekly Review */
+  .journal-review-grid {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+
+  .journal-card, .review-card {
+    padding: 1.15rem 0.95rem;
+  }
+
+  .journal-actions, .review-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+    text-align: center;
+  }
+
+  #btnSaveJournal, #btnSaveWeeklyReview {
+    width: 100%;
+    min-height: 42px;
+    justify-content: center;
+  }
+
+  .luxury-textarea {
+    font-size: 16px;
+    padding: 0.85rem;
+  }
+
+  .consistency-toggle-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .radio-label {
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-xs);
+    border: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+  }
+
+  .review-input-area {
+    font-size: 16px;
+    padding: 8px 10px;
+  }
+
+  /* 8. Settings & Data */
+  .settings-grid {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+
+  .settings-card {
+    padding: 1.15rem 0.95rem;
+  }
+
+  .form-input, .form-textarea {
+    font-size: 16px;
+    padding: 9px 11px;
+  }
+
+  #settingsProfileForm .btn {
+    width: 100%;
+    min-height: 42px;
+  }
+
+  .storage-notice-box {
+    padding: 0.85rem 0.95rem;
+    gap: 0.75rem;
+  }
+
+  .action-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    text-align: left;
+    padding: 0.95rem;
+  }
+
+  .action-row .btn, .file-input-label {
+    width: 100%;
+    min-height: 42px;
+    justify-content: center;
+  }
+
+  .danger-zone-box {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 0.95rem;
+  }
+
+  .btn-danger {
+    width: 100%;
+    min-height: 42px;
+    justify-content: center;
+  }
+
+  /* Modals */
+  .modal-backdrop {
+    padding: max(0.75rem, env(safe-area-inset-top, 0px)) max(0.75rem, env(safe-area-inset-right, 0px)) max(0.75rem, env(safe-area-inset-bottom, 0px)) max(0.75rem, env(safe-area-inset-left, 0px));
+  }
+
+  .modal-card {
+    padding: 1.35rem 1.05rem;
+    border-radius: var(--radius-md);
+    max-height: 90vh;
+    width: 100%;
+  }
+
+  .modal-close-btn {
+    top: 6px;
+    right: 8px;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-title {
+    font-size: 1.15rem;
+  }
+
+  .modal-subtitle {
+    font-size: 0.76rem;
+  }
+
+  .modal-actions .btn {
+    min-height: 44px;
+  }
+
+  /* Certificate Modal on Mobile */
+  .modal-certificate {
+    padding: 0.85rem 0.5rem !important;
+    width: 98% !important;
+    max-height: 92vh;
+  }
+
+  .certificate-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 2px;
+  }
+
+  .certificate-frame {
+    padding: 8px;
+    min-height: auto;
+    max-width: 100%;
+    border-width: 2px;
+  }
+
+  .cert-inner-border {
+    padding: 1.15rem 0.65rem;
+  }
+
+  .cert-crest {
+    font-size: 1.4rem;
+  }
+
+  .cert-pre-title {
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+  }
+
+  .cert-main-title {
+    font-size: 1.15rem;
+    letter-spacing: 0.08em;
+  }
+
+  .cert-arc-tag {
+    font-size: 0.62rem;
+  }
+
+  .cert-presented-text {
+    font-size: 0.65rem;
+  }
+
+  .cert-recipient-name {
+    font-size: 1.35rem;
+    letter-spacing: 0.08em;
+  }
+
+  .cert-divider-line {
+    width: 140px;
+    margin: 0.5rem auto 0.8rem;
+  }
+
+  .cert-statement {
+    font-size: 0.74rem;
+    line-height: 1.45;
+    margin-bottom: 0.75rem;
+  }
+
+  .cert-pillars-strip {
+    gap: 0.35rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .cert-pillar-tag {
+    font-size: 0.55rem;
+  }
+
+  .cert-footer {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    text-align: center;
+    padding-top: 0.85rem;
+  }
+
+  .cert-creed-box, .cert-meta-box {
+    text-align: center;
+    align-items: center;
+  }
+
+  .cert-signature-line {
+    margin: 0.25rem auto;
+    max-width: 140px;
+  }
+
+  .cert-gold-seal {
+    width: 65px;
+    height: 65px;
+  }
+
+  .seal-days {
+    font-size: 1.1rem;
+  }
+
+  .seal-text-top, .seal-text-bot {
+    font-size: 0.46rem;
+  }
+
+  .cert-modal-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.6rem;
+  }
+
+  .cert-modal-actions .btn {
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
+  }
+
+  /* Ambient Notification Toast */
+  .ambient-toast {
+    bottom: calc(4.6rem + env(safe-area-inset-bottom, 0px));
+    right: 1rem;
+    left: 1rem;
+    text-align: center;
+  }
+
+  /* App Footer */
+  .app-footer {
+    padding: 2rem 1rem calc(5.8rem + env(safe-area-inset-bottom, 12px));
+  }
+
+  .footer-brand-title {
+    font-size: 0.88rem;
+    letter-spacing: 0.16em;
+  }
+
+  .footer-tagline {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+  }
+
+  .footer-keywords {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    line-height: 1.6;
+  }
+}
+
+/* --- SMALL MOBILE PHONES (<= 480px) --- */
+@media (max-width: 480px) {
+  .nav-inner {
+    padding: 0.5rem 0.7rem;
+    gap: 0.4rem;
+  }
+
+  .brand-bold {
+    font-size: 0.84rem;
+  }
+
+  .nav-day-badge {
+    font-size: 0.58rem;
+    padding: 2px 6px;
+  }
+
+  .landing-brand-title .brand-name {
+    font-size: 2.6rem;
+    letter-spacing: 0.14em;
+  }
+
+  .landing-brand-title .brand-arc {
+    font-size: 1.8rem;
+  }
+
+  .script-accent {
+    font-size: 1.7rem;
+  }
+
+  .dashboard-hero-card {
+    padding: 1.15rem 0.85rem;
+  }
+
+  .hero-greeting {
+    font-size: 1.6rem;
+  }
+
+  .card-glass {
+    padding: 1.05rem 0.85rem;
+  }
+
+  .calendar-grid-container {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.35rem;
+  }
+
+  .cal-day-cell {
+    min-height: 46px;
+  }
+
+  .streak-beads-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.35rem;
+  }
+
+  .streak-bead {
+    min-height: 34px;
+    font-size: 0.68rem;
+  }
+
+  .mobile-bottom-nav {
+    padding: 0.3rem 0.1rem max(0.35rem, env(safe-area-inset-bottom, 4px));
+  }
+
+  .mobile-nav-link {
+    font-size: 0.54rem;
+    padding: 2px 1px;
+    min-height: 42px;
+  }
+
+  .mobile-nav-link svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* --- ULTRA-COMPACT MOBILE PHONES (<= 360px) --- */
+@media (max-width: 360px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pillars-container {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-grid-container {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.3rem;
+  }
+
+  .habits-header-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .mobile-nav-link {
+    font-size: 0.5rem;
+  }
+
+  .phase-tab-name {
+    font-size: 0.62rem;
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY: PREFERS REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .snow-canvas {
+    display: none !important;
+  }
 }
 
 /* Print CSS */

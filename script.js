@@ -99,7 +99,7 @@
     activePhase: 1, // 1, 2, or 3
     activeGoalMonth: '1', // '1', '2', '3', or 'all'
     analyticsRange: 7, // 7, 30, or 92
-    soundEnabled: false,
+    soundEnabled: true,
     snowEnabled: true
   };
 
@@ -347,6 +347,9 @@
 
     // Initialize Dedicated Page Router (Pure multi-page SPA navigation)
     initPageRouter();
+
+    // Automatically start soundtrack when users open the website
+    tryAutoPlaySoundtrack();
 
     // Set default date picker values to today
     const todayStr = getTodayDateString();
@@ -2000,7 +2003,7 @@
       }
     });
 
-    // Tooltip Interaction
+    // Tooltip Interaction (Desktop mouse & Mobile touch)
     canvas.onmousemove = function (e) {
       const mouseRect = canvas.getBoundingClientRect();
       const mouseX = e.clientX - mouseRect.left;
@@ -2029,6 +2032,43 @@
       } else {
         DOM.chartTooltip.style.display = 'none';
       }
+    };
+
+    function handleChartTouch(e) {
+      if (!e.touches || e.touches.length === 0) return;
+      const touch = e.touches[0];
+      const mouseRect = canvas.getBoundingClientRect();
+      const mouseX = touch.clientX - mouseRect.left;
+      const mouseY = touch.clientY - mouseRect.top;
+
+      let nearest = null;
+      let minDistance = 35;
+
+      coords.forEach((c) => {
+        const dist = Math.hypot(c.x - mouseX, c.y - mouseY);
+        if (dist < minDistance) {
+          minDistance = dist;
+          nearest = c;
+        }
+      });
+
+      if (nearest) {
+        DOM.chartTooltip.style.display = 'block';
+        DOM.chartTooltip.style.left = `${nearest.x}px`;
+        DOM.chartTooltip.style.top = `${nearest.y}px`;
+        DOM.chartTooltip.innerHTML = `
+          <strong>${nearest.pt.fullDate}</strong><br>
+          Score: <span style="color: var(--gold-light); font-weight:700;">${nearest.pt.score}%</span> (${nearest.pt.doneHabits}/${totalHabits})
+        `;
+      }
+    }
+
+    canvas.ontouchstart = handleChartTouch;
+    canvas.ontouchmove = handleChartTouch;
+    canvas.ontouchend = function () {
+      setTimeout(() => {
+        if (DOM.chartTooltip) DOM.chartTooltip.style.display = 'none';
+      }, 2500);
     };
 
     canvas.onmouseleave = function () {
@@ -2140,16 +2180,17 @@
   function loadSettings() {
     try {
       const stored = JSON.parse(localStorage.getItem(STORAGE_KEYS.SETTINGS) || '{}');
-      appState.soundEnabled = !!stored.soundEnabled;
+      appState.soundEnabled = stored.soundEnabled !== undefined ? !!stored.soundEnabled : true;
       appState.snowEnabled = stored.snowEnabled !== undefined ? stored.snowEnabled : true;
     } catch (e) {
-      appState.soundEnabled = false;
+      appState.soundEnabled = true;
       appState.snowEnabled = true;
     }
 
     if (DOM.btnSnowToggle) {
       DOM.btnSnowToggle.classList.toggle('active', appState.snowEnabled);
     }
+    updateSoundToggleUI(appState.soundEnabled);
   }
 
   function saveSettings() {
@@ -2183,8 +2224,9 @@
       height = canvas.height = window.innerHeight;
     });
 
-    // Particle count: 65 lightweight particles
-    const particleCount = 65;
+    // Particle count: 28 lightweight particles on mobile, 65 on desktop for optimal battery & 60fps
+    const isMobile = window.innerWidth <= 768;
+    const particleCount = isMobile ? 28 : 65;
     const particles = [];
 
     for (let i = 0; i < particleCount; i++) {
@@ -2292,37 +2334,92 @@
     [523.25, 622.25, 783.99, 932.33, 783.99, 622.25]
   ];
 
-  function toggleAtmosphereSound() {
+  function updateSoundToggleUI(isActive) {
+    if (!DOM.btnSoundToggle) return;
+    const iconOff = DOM.btnSoundToggle.querySelector('.sound-off');
+    const iconOn = DOM.btnSoundToggle.querySelector('.sound-on');
+    if (iconOff) iconOff.style.display = isActive ? 'none' : 'block';
+    if (iconOn) iconOn.style.display = isActive ? 'block' : 'none';
+    DOM.btnSoundToggle.classList.toggle('active', isActive);
+  }
+
+  function ensureAudioContext() {
     if (!audioCtx) {
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
       if (AudioContextClass) {
         audioCtx = new AudioContextClass();
-      } else {
-        showToast('Web Audio not supported');
-        return;
       }
     }
-
-    if (audioCtx.state === 'suspended') {
+    if (audioCtx && audioCtx.state === 'suspended') {
       audioCtx.resume();
+    }
+    return audioCtx;
+  }
+
+  function tryAutoPlaySoundtrack() {
+    if (!appState.soundEnabled) return;
+    try {
+      const ctx = ensureAudioContext();
+      if (ctx) {
+        if (ctx.state === 'running') {
+          startWinterSoundtrack();
+          updateSoundToggleUI(true);
+        } else {
+          // If browser Autoplay policy temporarily paused AudioContext, unlock on first user gesture
+          enableAutoplayOnFirstInteraction();
+        }
+      }
+    } catch (e) {
+      enableAutoplayOnFirstInteraction();
+    }
+  }
+
+  let autoplayUnlocked = false;
+  function enableAutoplayOnFirstInteraction() {
+    if (autoplayUnlocked) return;
+    const unlockAutoplay = () => {
+      autoplayUnlocked = true;
+      if (!appState.soundEnabled) return;
+      try {
+        const ctx = ensureAudioContext();
+        if (ctx) {
+          ctx.resume().then(() => {
+            if (appState.soundEnabled && !winterMusicEngine.isPlaying) {
+              startWinterSoundtrack();
+              updateSoundToggleUI(true);
+            }
+          }).catch(() => {});
+        }
+      } catch (err) {}
+
+      ['click', 'touchstart', 'pointerdown', 'keydown'].forEach((evt) => {
+        window.removeEventListener(evt, unlockAutoplay, true);
+        document.removeEventListener(evt, unlockAutoplay, true);
+      });
+    };
+
+    ['click', 'touchstart', 'pointerdown', 'keydown'].forEach((evt) => {
+      window.addEventListener(evt, unlockAutoplay, { once: true, capture: true });
+      document.addEventListener(evt, unlockAutoplay, { once: true, capture: true });
+    });
+  }
+
+  function toggleAtmosphereSound() {
+    const ctx = ensureAudioContext();
+    if (!ctx) {
+      showToast('Web Audio not supported');
+      return;
     }
 
     appState.soundEnabled = !appState.soundEnabled;
     saveSettings();
 
-    const iconOff = DOM.btnSoundToggle.querySelector('.sound-off');
-    const iconOn = DOM.btnSoundToggle.querySelector('.sound-on');
-
     if (appState.soundEnabled) {
-      if (iconOff) iconOff.style.display = 'none';
-      if (iconOn) iconOn.style.display = 'block';
-      DOM.btnSoundToggle.classList.add('active');
+      updateSoundToggleUI(true);
       startWinterSoundtrack();
       showToast('🎵 Winter Arc Soundtrack Active ❄️');
     } else {
-      if (iconOff) iconOff.style.display = 'block';
-      if (iconOn) iconOn.style.display = 'none';
-      DOM.btnSoundToggle.classList.remove('active');
+      updateSoundToggleUI(false);
       stopWinterSoundtrack();
       showToast('Soundtrack muted');
     }
@@ -2334,11 +2431,19 @@
     try {
       winterMusicEngine.isPlaying = true;
 
-      // 1. Master Output Gain
+      // 1. Master Output Gain with Limiter / Dynamics Compressor
+      const compressor = audioCtx.createDynamicsCompressor();
+      compressor.threshold.setValueAtTime(-14, audioCtx.currentTime);
+      compressor.knee.setValueAtTime(10, audioCtx.currentTime);
+      compressor.ratio.setValueAtTime(3.5, audioCtx.currentTime);
+      compressor.attack.setValueAtTime(0.003, audioCtx.currentTime);
+      compressor.release.setValueAtTime(0.25, audioCtx.currentTime);
+      compressor.connect(audioCtx.destination);
+
       const master = audioCtx.createGain();
       master.gain.setValueAtTime(0.001, audioCtx.currentTime);
-      master.gain.exponentialRampToValueAtTime(0.24, audioCtx.currentTime + 2.5);
-      master.connect(audioCtx.destination);
+      master.gain.exponentialRampToValueAtTime(0.75, audioCtx.currentTime + 1.8);
+      master.connect(compressor);
       winterMusicEngine.masterGain = master;
 
       // 2. Stereo Delay / Reverb Bus
@@ -2347,7 +2452,7 @@
 
       const delayFilter = audioCtx.createBiquadFilter();
       delayFilter.type = 'lowpass';
-      delayFilter.frequency.setValueAtTime(1400, audioCtx.currentTime);
+      delayFilter.frequency.setValueAtTime(1600, audioCtx.currentTime);
 
       const delayFeedback = audioCtx.createGain();
       delayFeedback.gain.setValueAtTime(0.38, audioCtx.currentTime);
@@ -2377,11 +2482,11 @@
         const windFilter = audioCtx.createBiquadFilter();
         windFilter.type = 'bandpass';
         windFilter.frequency.setValueAtTime(320, audioCtx.currentTime);
-        windFilter.Q.setValueAtTime(3.0, audioCtx.currentTime);
+        windFilter.Q.setValueAtTime(2.5, audioCtx.currentTime);
 
         const windGain = audioCtx.createGain();
         windGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-        windGain.gain.exponentialRampToValueAtTime(0.016, audioCtx.currentTime + 3.0);
+        windGain.gain.exponentialRampToValueAtTime(0.032, audioCtx.currentTime + 2.5);
 
         windSource.connect(windFilter);
         windFilter.connect(windGain);
@@ -2443,11 +2548,11 @@
 
       const bassFilter = audioCtx.createBiquadFilter();
       bassFilter.type = 'lowpass';
-      bassFilter.frequency.setValueAtTime(160, now);
+      bassFilter.frequency.setValueAtTime(180, now);
 
       const bassGain = audioCtx.createGain();
       bassGain.gain.setValueAtTime(0.0001, now);
-      bassGain.gain.exponentialRampToValueAtTime(0.065, now + 2.0);
+      bassGain.gain.exponentialRampToValueAtTime(0.18, now + 1.8);
 
       bassOsc.connect(bassFilter);
       bassFilter.connect(bassGain);
@@ -2468,12 +2573,12 @@
 
         const filter = audioCtx.createBiquadFilter();
         filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(520, now);
-        filter.Q.setValueAtTime(1.5, now);
+        filter.frequency.setValueAtTime(720, now);
+        filter.Q.setValueAtTime(1.2, now);
 
         const voiceGain = audioCtx.createGain();
         voiceGain.gain.setValueAtTime(0.0001, now);
-        voiceGain.gain.exponentialRampToValueAtTime(0.022, now + 2.2);
+        voiceGain.gain.exponentialRampToValueAtTime(0.075, now + 2.0);
 
         osc.connect(filter);
         filter.connect(voiceGain);
@@ -2524,12 +2629,12 @@
       // Crisp acoustic envelope
       const bellGain = audioCtx.createGain();
       bellGain.gain.setValueAtTime(0.0001, now);
-      bellGain.gain.linearRampToValueAtTime(0.048, now + 0.015);
+      bellGain.gain.linearRampToValueAtTime(0.14, now + 0.015);
       bellGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.4);
 
       const shimmerGain = audioCtx.createGain();
       shimmerGain.gain.setValueAtTime(0.0001, now);
-      shimmerGain.gain.linearRampToValueAtTime(0.012, now + 0.015);
+      shimmerGain.gain.linearRampToValueAtTime(0.042, now + 0.015);
       shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
 
       // Stereo positioning if available
@@ -2629,6 +2734,7 @@
   function bindGlobalEvents() {
     // Landing Screen Actions
     DOM.btnLandingStart.addEventListener('click', () => {
+      tryAutoPlaySoundtrack();
       if (appState.user && appState.user.name) {
         showDashboard();
       } else {
@@ -2637,6 +2743,7 @@
     });
 
     DOM.btnLandingExisting.addEventListener('click', () => {
+      tryAutoPlaySoundtrack();
       showDashboard();
     });
 
@@ -3133,6 +3240,7 @@
     DOM.landingScreen.classList.remove('active');
     DOM.appContainer.style.display = 'flex';
     switchPage('dashboardSection');
+    tryAutoPlaySoundtrack();
 
     // If profile not set yet, open modal
     if (!appState.user) {
