@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="pageTitle">THE WINTER ARC | 90 Days of Discipline</title>
-  <meta name="description" content="Personal 90-day discipline and self-improvement tracker. 90 days. One mission. A stronger you.">
+  <title id="pageTitle">THE WINTER ARC | 92 Days of Discipline</title>
+  <meta name="description" content="Personal 92-day discipline and self-improvement tracker. 92 days. One mission. A stronger you.">
   
   <!-- Google Fonts (with elegant system serif/sans fallbacks) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,9 +23,7 @@
 
   <!-- ==================== LANDING SCREEN ==================== -->
   <section id="landingScreen" class="landing-screen active" aria-label="Welcome to Winter Arc">
-    <div class="landing-backdrop">
-      <div class="landing-overlay"></div>
-    </div>
+    <div class="landing-backdrop"></div>
 
     <div class="landing-content">
       <div class="brand-crest">
@@ -53,7 +51,7 @@
           <span class="brand-arc">WINTER <em class="arc-script">Arc</em></span>
         </h1>
         <div class="script-accent">Progress Over Perfection</div>
-        <p class="landing-subtitle">90 DAYS OF DISCIPLINE</p>
+        <p class="landing-subtitle">92 DAYS OF DISCIPLINE</p>
       </div>
 
       <p class="landing-description">
@@ -112,7 +110,7 @@
             <span class="brand-sep">/</span>
             <span class="brand-thin">WINTER ARC</span>
           </div>
-          <span class="nav-day-badge" id="navDayBadge">DAY 01 / 90</span>
+          <span class="nav-day-badge" id="navDayBadge">DAY 01 / 92</span>
         </div>
 
         <nav class="nav-links" id="desktopNavLinks">
@@ -127,7 +125,7 @@
 
         <div class="nav-actions">
           <!-- Atmosphere Sound Synthesizer Toggle -->
-          <button id="btnSoundToggle" class="icon-btn" title="Toggle Winter Atmospheric Sound" aria-label="Toggle Winter Atmospheric Sound">
+          <button id="btnSoundToggle" class="icon-btn" title="Play Premium Winter Arc Soundtrack" aria-label="Play Premium Winter Arc Soundtrack">
             <svg class="sound-icon sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M11 5L6 9H2v6h4l5 4V5z"/>
               <line x1="23" y1="9" x2="17" y2="15"/>
@@ -160,7 +158,7 @@
     <main class="main-content" id="mainContent">
 
       <!-- ==================== 1. DASHBOARD OVERVIEW ==================== -->
-      <section id="dashboardSection" class="content-section">
+      <section id="dashboardSection" class="content-section active-page">
         
         <!-- CINEMATIC HERO GREETING BANNER -->
         <div class="dashboard-hero-card">
@@ -177,8 +175,11 @@
             <div class="hero-headline-wrap">
               <h2 class="hero-greeting" id="heroGreeting">GOOD MORNING.</h2>
               <div class="hero-counter-wrap">
-                <span class="hero-day-stat" id="heroDayCounter">DAY 01 / 90</span>
-                <span class="hero-remaining-stat" id="heroDaysRemaining">89 DAYS REMAINING</span>
+                <span class="hero-day-stat" id="heroDayCounter">DAY 01 / 92</span>
+                <span class="hero-remaining-stat" id="heroDaysRemaining">91 DAYS REMAINING</span>
+                <button type="button" id="btnOpenCertModal" class="btn-cert-badge locked" title="Locked until Day 92">
+                  <span>🔒 CERTIFICATE (DAY 92)</span>
+                </button>
               </div>
               <p class="hero-quote" id="heroMottoQuote">“Discipline is choosing what you want most over what you want now.”</p>
             </div>
@@ -203,12 +204,25 @@
             <div class="arc-bar-labels">
               <span>Day 1 (Foundation)</span>
               <span id="arcPhaseLabel">Phase 1 of 3</span>
-              <span>Day 90 (Mastery)</span>
+              <span>Day 92 (Mastery)</span>
             </div>
             <div class="arc-bar-track">
               <div class="arc-bar-fill" id="arcTotalBarFill" style="width: 1.1%;"></div>
             </div>
           </div>
+        </div>
+
+        <!-- 92-DAY ARC COMPLETION CELEBRATION BANNER -->
+        <div class="arc-complete-banner card-glass" id="arcCompleteBanner" style="display: none;">
+          <div class="complete-crest-lg">🏆</div>
+          <div class="complete-text-wrap">
+            <div class="complete-badge-pill">92 DAYS MASTERED · WINTER ARC 2026</div>
+            <h3 class="complete-title">CONGRATULATIONS, YOU CONQUERED THE WINTER ARC! 🏆</h3>
+            <p class="complete-sub">You have executed all 92 days of relentless non-negotiable discipline. Your official personalized Certificate of Completion has been auto-generated.</p>
+          </div>
+          <button type="button" id="btnClaimCertificate" class="btn btn-gold btn-md">
+            <span>Claim Certificate</span>
+          </button>
         </div>
 
         <!-- 4 ANIMATED STAT CARDS -->
@@ -294,6 +308,23 @@
           </div>
         </div>
 
+        <!-- CINEMATIC MOTIVATION BANNER -->
+        <div class="motivation-banner card-glass">
+          <div class="motivation-content">
+            <span class="motivation-tag">THE WINTER ARC PRINCIPLE</span>
+            <blockquote class="motivation-quote">
+              “Discipline is choosing what you want most over what you want now.”
+            </blockquote>
+            <div class="motivation-headline">
+              <span class="mot-line">SAME YOU.</span>
+              <span class="mot-line gold-accent">STRONGER VERSION.</span>
+            </div>
+            <p class="motivation-creed">
+              “Discipline turns ordinary days into extraordinary results.”
+            </p>
+          </div>
+        </div>
+
       </section>
 
       <!-- ==================== 2. DAILY HABIT TRACKER ==================== -->
@@ -339,8 +370,24 @@
           <!-- HABITS CHECKLIST / MATRIX -->
           <div class="habits-column card-glass">
             <div class="habits-column-header">
-              <span class="column-title" id="habitsColumnTitle">12 DAILY NON-NEGOTIABLES</span>
-              <span class="column-count" id="habitsCheckedCounter">0 / 12 COMPLETED</span>
+              <div class="habits-header-left">
+                <span class="column-title" id="habitsColumnTitle">12 DAILY NON-NEGOTIABLES</span>
+                <span class="column-count" id="habitsCheckedCounter">0 / 12 COMPLETED</span>
+              </div>
+              <div class="habits-header-actions">
+                <button type="button" class="btn btn-gold btn-xs" id="btnOpenAddHabitModal" title="Add your custom task for all 90 days">
+                  <svg viewBox="0 0 20 20" fill="currentColor" width="13" height="13" style="margin-right: 4px;">
+                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>+ ADD TASK</span>
+                </button>
+                <button type="button" class="btn btn-outline btn-xs btn-remove-default" id="btnToggleDefaultHabits" title="Remove all 12 pre-defined tasks for all 90 days">
+                  <svg viewBox="0 0 20 20" fill="currentColor" width="13" height="13" style="margin-right: 4px;">
+                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                  </svg>
+                  <span id="toggleDefaultBtnText">REMOVE DEFAULT 12</span>
+                </button>
+              </div>
             </div>
 
             <!-- Single Day List View -->
@@ -447,10 +494,7 @@
 
         </div>
 
-      </section>
-
-      <!-- ==================== 3. PRIORITIES, GRATITUDE & SCRATCHPAD ==================== -->
-      <section class="content-section">
+        <!-- TODAY'S PRIORITIES, GRATITUDE & SCRATCHPAD -->
         <div class="three-column-grid">
 
           <!-- TODAY'S PRIORITIES -->
@@ -550,8 +594,8 @@
       <section id="calendarSection" class="content-section">
         <div class="section-header-split">
           <div>
-            <div class="section-tag">90-DAY MISSION MAP</div>
-            <h2 class="section-title">THE 90-DAY CALENDAR</h2>
+            <div class="section-tag">92-DAY MISSION MAP</div>
+            <h2 class="section-title">THE 92-DAY CALENDAR</h2>
           </div>
           <div class="calendar-legend">
             <span class="legend-item"><span class="legend-dot status-completed"></span> Completed (100%)</span>
@@ -570,23 +614,23 @@
             <button class="phase-tab-btn active" data-phase="1">
               <span class="phase-tab-num">PHASE 01</span>
               <span class="phase-tab-name">BUILD THE FOUNDATION</span>
-              <span class="phase-tab-days">Days 1 – 30</span>
+              <span class="phase-tab-days">Days 1 – 31 (October)</span>
             </button>
             <button class="phase-tab-btn" data-phase="2">
               <span class="phase-tab-num">PHASE 02</span>
               <span class="phase-tab-name">BUILD CONSISTENCY</span>
-              <span class="phase-tab-days">Days 31 – 60</span>
+              <span class="phase-tab-days">Days 32 – 61 (November)</span>
             </button>
             <button class="phase-tab-btn" data-phase="3">
               <span class="phase-tab-num">PHASE 03</span>
               <span class="phase-tab-name">BECOME THE STANDARD</span>
-              <span class="phase-tab-days">Days 61 – 90</span>
+              <span class="phase-tab-days">Days 62 – 92 (December)</span>
             </button>
           </div>
 
-          <!-- The 30 / 90 Days Grid Container -->
+          <!-- The 92 Days Grid Container -->
           <div class="calendar-grid-container" id="calendarDaysGrid">
-            <!-- Dynamically generated 30 days of the active phase or all 90 -->
+            <!-- Dynamically generated days of the active phase or all 92 -->
           </div>
 
           <div class="calendar-footer-info">
@@ -615,13 +659,26 @@
             <div class="goals-col-header">
               <div>
                 <h3 class="col-title">MONTHLY GOALS</h3>
-                <span class="col-sub" id="monthlyGoalsSubtitle">ARC TARGETS · MONTH 01</span>
+                <span class="col-sub" id="monthlyGoalsSubtitle">ARC TARGETS · MONTH 01 (OCTOBER)</span>
               </div>
-              <span class="goals-pill-badge" id="goalsCompletionBadge">0 / 8 DONE</span>
+              <div class="monthly-header-actions" style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+                <select id="monthlySelectDropdown" class="luxury-select">
+                  <option value="1">Month 01 (Oct · Days 1–31)</option>
+                  <option value="2">Month 02 (Nov · Days 32–61)</option>
+                  <option value="3">Month 03 (Dec · Days 62–92)</option>
+                  <option value="all">All Months</option>
+                </select>
+                <span class="goals-pill-badge" id="goalsCompletionBadge">0 / 8 DONE</span>
+              </div>
             </div>
 
             <div class="goals-list" id="monthlyGoalsList">
               <!-- Populated by script.js -->
+            </div>
+
+            <div class="add-weekly-item-form">
+              <input type="text" id="newMonthlyGoalInput" class="weekly-input" placeholder="Add specific target for this month...">
+              <button id="btnAddMonthlyGoal" class="btn btn-outline btn-sm">Add</button>
             </div>
 
             <div class="quote-script-footer">
@@ -650,6 +707,7 @@
                 <option value="11">Week 11</option>
                 <option value="12">Week 12</option>
                 <option value="13">Week 13</option>
+                <option value="14">Week 14</option>
               </select>
             </div>
 
@@ -679,7 +737,7 @@
           <div class="analytics-tabs">
             <button class="analytics-tab-btn active" data-range="7">7 DAYS</button>
             <button class="analytics-tab-btn" data-range="30">30 DAYS</button>
-            <button class="analytics-tab-btn" data-range="90">90 DAYS</button>
+            <button class="analytics-tab-btn" data-range="92">92 DAYS</button>
           </div>
         </div>
 
@@ -717,7 +775,7 @@
 
           <div class="chart-legend">
             <span class="chart-legend-indicator"></span>
-            <span>Daily Habit Completion Score (% of 12 habits achieved)</span>
+            <span>Daily Discipline Completion Score (% of disciplines achieved)</span>
           </div>
 
         </div>
@@ -789,6 +847,7 @@ Reflect on your struggles, breakthroughs, wins, and the discipline it took to co
                 <option value="11">Week 11</option>
                 <option value="12">Week 12</option>
                 <option value="13">Week 13</option>
+                <option value="14">Week 14</option>
               </select>
             </div>
 
@@ -840,27 +899,7 @@ Reflect on your struggles, breakthroughs, wins, and the discipline it took to co
 
       </section>
 
-      <!-- ==================== 8. CINEMATIC MOTIVATION BANNER ==================== -->
-      <section class="content-section motivation-section">
-        <div class="motivation-banner card-glass">
-          <div class="motivation-overlay"></div>
-          <div class="motivation-content">
-            <span class="motivation-tag">THE WINTER ARC PRINCIPLE</span>
-            <blockquote class="motivation-quote">
-              “Discipline is choosing what you want most over what you want now.”
-            </blockquote>
-            <div class="motivation-headline">
-              <span class="mot-line">SAME YOU.</span>
-              <span class="mot-line gold-accent">STRONGER VERSION.</span>
-            </div>
-            <p class="motivation-creed">
-              “Discipline turns ordinary days into extraordinary results.”
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==================== 9. SETTINGS & LOCAL DATA ==================== -->
+      <!-- ==================== 7. SETTINGS & LOCAL DATA ==================== -->
       <section id="settingsSection" class="content-section">
         
         <div class="section-header-split">
@@ -1015,6 +1054,13 @@ Reflect on your struggles, breakthroughs, wins, and the discipline it took to co
         <span>Calendar</span>
       </a>
 
+      <a href="#analyticsSection" class="mobile-nav-link" data-section="analyticsSection">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M18 20V10M12 20V4M6 20v-6"/>
+        </svg>
+        <span>Progress</span>
+      </a>
+
       <a href="#journalSection" class="mobile-nav-link" data-section="journalSection">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <path d="M12 20h9"/>
@@ -1043,7 +1089,7 @@ Reflect on your struggles, breakthroughs, wins, and the discipline it took to co
       <div class="modal-header">
         <div class="modal-crest">👑</div>
         <h2 id="setupModalTitle" class="modal-title">CREATE YOUR PROFILE</h2>
-        <p class="modal-subtitle">Initiate your 90-day discipline transformation</p>
+        <p class="modal-subtitle">Initiate your 92-day discipline transformation</p>
       </div>
 
       <form id="onboardingForm" class="modal-form">
@@ -1055,7 +1101,7 @@ Reflect on your struggles, breakthroughs, wins, and the discipline it took to co
         <div class="form-group">
           <label for="setupStartDate" class="form-label">Winter Arc Start Date</label>
           <input type="date" id="setupStartDate" class="form-input" required>
-          <span class="input-helper">When does (or did) your 90-day arc begin?</span>
+          <span class="input-helper">When does (or did) your 92-day arc begin?</span>
         </div>
 
         <div class="form-group">
@@ -1095,6 +1141,16 @@ Reflect on your struggles, breakthroughs, wins, and the discipline it took to co
         </div>
 
         <div class="form-group">
+          <label for="newGoalMonth" class="form-label">Month Target</label>
+          <select id="newGoalMonth" class="luxury-select w-100">
+            <option value="1">Month 01 (October · Days 1–31)</option>
+            <option value="2">Month 02 (November · Days 32–61)</option>
+            <option value="3">Month 03 (December · Days 62–92)</option>
+            <option value="all">All Months</option>
+          </select>
+        </div>
+
+        <div class="form-group">
           <label for="newGoalCategory" class="form-label">Pillar Category</label>
           <select id="newGoalCategory" class="luxury-select w-100">
             <option value="Physical">Physical</option>
@@ -1110,6 +1166,81 @@ Reflect on your struggles, breakthroughs, wins, and the discipline it took to co
           <button type="submit" class="btn btn-gold w-100">Save Goal</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- 2B. ADD CUSTOM DISCIPLINE MODAL (Applies to all 90 days) -->
+  <div id="addHabitModal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="addHabitModalTitle">
+    <div class="modal-card card-glass modal-sm">
+      <div class="modal-header">
+        <div class="modal-crest">⚡</div>
+        <h3 class="modal-title" id="addHabitModalTitle">ADD DAILY DISCIPLINE</h3>
+        <p class="modal-subtitle">This task applies across all 92 days of your Winter Arc</p>
+        <button class="modal-close-btn" id="btnCloseHabitModal">&times;</button>
+      </div>
+
+      <form id="addHabitForm" class="modal-form">
+        <div class="form-group">
+          <label for="newHabitName" class="form-label">Discipline / Task Name</label>
+          <input type="text" id="newHabitName" class="form-input" placeholder="e.g. Cold Shower, 100 Pushups, Read 20 Pages" required maxlength="60">
+        </div>
+
+        <div class="form-group">
+          <label for="newHabitDesc" class="form-label">Description / Standard (Optional)</label>
+          <input type="text" id="newHabitDesc" class="form-input" placeholder="e.g. 5 minutes ice cold every morning" maxlength="90">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Task Icon / Emoji</label>
+          <div class="emoji-picker-container">
+            <div class="emoji-picker-row">
+              <input type="text" id="newHabitIcon" class="form-input emoji-input" value="⚡" maxlength="4" style="width: 58px; text-align: center; font-size: 1.3rem;">
+              <span class="input-helper" style="margin: 0; align-self: center;">Pick an icon or type custom emoji</span>
+            </div>
+            <div class="emoji-preset-chips" id="emojiPresetChips">
+              <button type="button" class="emoji-chip" data-emoji="⚡">⚡</button>
+              <button type="button" class="emoji-chip" data-emoji="🔥">🔥</button>
+              <button type="button" class="emoji-chip" data-emoji="💪">💪</button>
+              <button type="button" class="emoji-chip" data-emoji="🏃">🏃</button>
+              <button type="button" class="emoji-chip" data-emoji="🚿">🚿</button>
+              <button type="button" class="emoji-chip" data-emoji="🧘">🧘</button>
+              <button type="button" class="emoji-chip" data-emoji="📚">📚</button>
+              <button type="button" class="emoji-chip" data-emoji="💻">💻</button>
+              <button type="button" class="emoji-chip" data-emoji="💧">💧</button>
+              <button type="button" class="emoji-chip" data-emoji="🥗">🥗</button>
+              <button type="button" class="emoji-chip" data-emoji="🎯">🎯</button>
+              <button type="button" class="emoji-chip" data-emoji="⏱️">⏱️</button>
+              <button type="button" class="emoji-chip" data-emoji="🌅">🌅</button>
+              <button type="button" class="emoji-chip" data-emoji="🧠">🧠</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.6rem;">
+          <button type="submit" class="btn btn-gold w-100">Add to All 92 Days</button>
+          <button type="button" class="btn btn-outline w-100" id="btnCancelHabitModal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2C. REMOVE / MANAGE DISCIPLINES MODAL -->
+  <div id="removeHabitModal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="removeHabitModalTitle">
+    <div class="modal-card card-glass modal-sm">
+      <div class="modal-header">
+        <div class="modal-crest">🗑️</div>
+        <h3 class="modal-title" id="removeHabitModalTitle">REMOVE DISCIPLINES</h3>
+        <p class="modal-subtitle">Removing a task removes it for all 92 days. You can restore defaults anytime.</p>
+        <button class="modal-close-btn" id="btnCloseRemoveHabitModal">&times;</button>
+      </div>
+
+      <div class="remove-habits-body" id="removeHabitsListContainer" style="max-height: 380px; overflow-y: auto; margin: 1.2rem 0; display: flex; flex-direction: column; gap: 0.6rem;">
+        <!-- Populated dynamically with active habits and delete buttons -->
+      </div>
+
+      <div class="modal-actions" style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.6rem;">
+        <button type="button" class="btn btn-outline w-100" id="btnDoneRemoveHabitModal">Close</button>
+      </div>
     </div>
   </div>
 
@@ -1154,6 +1285,110 @@ Reflect on your struggles, breakthroughs, wins, and the discipline it took to co
         <button id="btnConfirmReset" class="btn btn-danger w-100" disabled>Permanently Wipe Data</button>
         <button id="btnCancelReset" class="btn btn-outline w-100">Cancel</button>
       </div>
+    </div>
+  </div>
+
+  <!-- 5. 92-DAY WINTER ARC OFFICIAL CERTIFICATE MODAL -->
+  <div id="certificateModal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="certModalTitle">
+    <div class="modal-card card-glass modal-certificate">
+      <div class="modal-header cert-modal-header">
+        <div class="modal-crest">🏆</div>
+        <div>
+          <h3 class="modal-title" id="certModalTitle">WINTER ARC CERTIFICATE OF COMPLETION</h3>
+          <p class="modal-subtitle">Official Recognition of 92 Days of Non-Negotiable Discipline</p>
+        </div>
+        <button type="button" class="modal-close-btn" id="btnCloseCertModal">&times;</button>
+      </div>
+
+      <!-- THE LUXURIOUS PRINTABLE & RENDERABLE CERTIFICATE FRAME -->
+      <div class="certificate-wrapper">
+        <div class="certificate-frame" id="printableCertificate">
+          <!-- Corner flourishes -->
+          <div class="cert-corner tl"></div>
+          <div class="cert-corner tr"></div>
+          <div class="cert-corner bl"></div>
+          <div class="cert-corner br"></div>
+
+          <!-- Certificate Inner Border -->
+          <div class="cert-inner-border">
+            
+            <div class="cert-header">
+              <div class="cert-crest">❄️ ⚔️ ❄️</div>
+              <div class="cert-pre-title">OFFICIAL RECOGNITION OF HONOR &amp; RELENTLESS DISCIPLINE</div>
+              <h1 class="cert-main-title">CERTIFICATE OF COMPLETION</h1>
+              <div class="cert-arc-tag">THE 92-DAY WINTER ARC · OCTOBER 01 – DECEMBER 31</div>
+            </div>
+
+            <div class="cert-body">
+              <div class="cert-presented-text">THIS CERTIFIES WITH DISTINCTION THAT</div>
+              <div class="cert-recipient-name" id="certRecipientName">SAI MOKSHITH</div>
+              <div class="cert-divider-line"></div>
+              
+              <p class="cert-statement">
+                has successfully executed and conquered the full <strong>92 Days of the Winter Arc</strong>.
+                Through cold dawns, unyielding standards, rigorous physical training, academic excellence, and deliberate daily practice, you proved that your discipline is greater than your excuses.
+              </p>
+
+              <!-- 6 Pillars & Metrics Badge -->
+              <div class="cert-pillars-strip">
+                <span class="cert-pillar-tag">PHYSICAL</span>
+                <span class="cert-pillar-dot">·</span>
+                <span class="cert-pillar-tag">MENTAL</span>
+                <span class="cert-pillar-dot">·</span>
+                <span class="cert-pillar-tag">ACADEMIC</span>
+                <span class="cert-pillar-dot">·</span>
+                <span class="cert-pillar-tag">SKILLS</span>
+                <span class="cert-pillar-dot">·</span>
+                <span class="cert-pillar-tag">DISCIPLINE</span>
+                <span class="cert-pillar-dot">·</span>
+                <span class="cert-pillar-tag">LIFE</span>
+              </div>
+            </div>
+
+            <div class="cert-footer">
+              <div class="cert-creed-box">
+                <div class="cert-creed-quote">“Discipline today, A Better Tomorrow”</div>
+                <div class="cert-signature-line"></div>
+                <div class="cert-signer-title">WINTER ARC CREED</div>
+              </div>
+
+              <div class="cert-gold-seal">
+                <div class="seal-inner">
+                  <span class="seal-star">★ ★ ★</span>
+                  <span class="seal-text-top">WINTER ARC</span>
+                  <span class="seal-days">92</span>
+                  <span class="seal-text-bot">DAYS COMPLETE</span>
+                </div>
+              </div>
+
+              <div class="cert-meta-box">
+                <div class="cert-code" id="certVerificationCode">ID: WA-2026-92D-VERIFIED</div>
+                <div class="cert-signature-line"></div>
+                <div class="cert-signer-title">OFFICIAL COMPLETION SEAL</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="modal-actions cert-modal-actions">
+        <button type="button" class="btn btn-gold btn-md" id="btnDownloadCertPng">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" style="margin-right: 6px;">
+            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+          Download Certificate (PNG)
+        </button>
+        <button type="button" class="btn btn-outline btn-md" id="btnPrintCert">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" style="margin-right: 6px;">
+            <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd"/>
+          </svg>
+          Print / PDF
+        </button>
+        <button type="button" class="btn btn-text-subtle" id="btnCloseCertModal2">Close</button>
+      </div>
+
     </div>
   </div>
 
