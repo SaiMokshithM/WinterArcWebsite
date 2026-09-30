@@ -88,6 +88,13 @@
 
   // --- DOM ELEMENT REFERENCES ---
   const DOM = {
+    // Dynamic Branding Elements
+    pageTitle: document.getElementById('pageTitle'),
+    landingBrandName: document.getElementById('landingBrandName'),
+    navBrandName: document.getElementById('navBrandName'),
+    footerBrandTitle: document.getElementById('footerBrandTitle'),
+    strongerTargetName: document.getElementById('strongerTargetName'),
+
     // Screens & Containers
     landingScreen: document.getElementById('landingScreen'),
     appContainer: document.getElementById('appContainer'),
@@ -270,8 +277,13 @@
       DOM.btnLandingExisting.style.display = 'inline-flex';
       DOM.btnLandingExisting.onclick = () => showDashboard();
     } else {
-      // First visit - user profile does not exist
+      // First visit - user profile does not exist yet (neutral universal display)
       DOM.btnLandingExisting.style.display = 'none';
+      if (DOM.landingBrandName) DOM.landingBrandName.textContent = 'THE';
+      if (DOM.navBrandName) DOM.navBrandName.textContent = 'MY';
+      if (DOM.footerBrandTitle) DOM.footerBrandTitle.textContent = 'THE WINTER ARC 2026';
+      if (DOM.strongerTargetName) DOM.strongerTargetName.textContent = 'YOU';
+      if (DOM.pageTitle) DOM.pageTitle.textContent = 'THE WINTER ARC | 90 Days of Discipline';
     }
 
     // Set default date picker values to today
@@ -307,10 +319,11 @@
    */
   function saveUser(profile) {
     try {
+      const sanitizedName = profile.name ? profile.name.trim() : '';
       appState.user = {
-        name: profile.name.trim() || 'Sai',
+        name: sanitizedName || 'Warrior',
         startDate: profile.startDate || getTodayDateString(),
-        goal: profile.goal.trim() || 'Build unbreakable discipline and mental clarity',
+        goal: (profile.goal && profile.goal.trim()) || 'Build unbreakable discipline and mental clarity',
         updatedAt: new Date().toISOString()
       };
       localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(appState.user));
@@ -322,12 +335,21 @@
   }
 
   /**
-   * Synchronizes user profile data across all dashboard widgets
+   * Synchronizes user profile data across all dashboard widgets & branding elements
    */
   function applyUserProfileToUI() {
     if (!appState.user) return;
 
     const { name, startDate, goal } = appState.user;
+    const cleanName = (name && name.trim()) || 'Warrior';
+    const upperName = cleanName.toUpperCase();
+
+    // Dynamic Branding Across the entire application
+    if (DOM.landingBrandName) DOM.landingBrandName.textContent = upperName;
+    if (DOM.navBrandName) DOM.navBrandName.textContent = upperName;
+    if (DOM.footerBrandTitle) DOM.footerBrandTitle.textContent = `${upperName} — WINTER ARC 2026`;
+    if (DOM.strongerTargetName) DOM.strongerTargetName.textContent = upperName;
+    if (DOM.pageTitle) DOM.pageTitle.textContent = `${upperName} — WINTER ARC | 90 Days of Discipline`;
 
     // Greeting
     const hour = new Date().getHours();
@@ -335,15 +357,15 @@
     if (hour >= 12 && hour < 17) timeGreeting = 'GOOD AFTERNOON';
     else if (hour >= 17) timeGreeting = 'GOOD EVENING';
 
-    DOM.heroGreeting.textContent = `${timeGreeting}, ${name.toUpperCase()}.`;
+    DOM.heroGreeting.textContent = `${timeGreeting}, ${upperName}.`;
 
     // Nav pill
-    const initial = name.charAt(0).toUpperCase() || 'S';
+    const initial = cleanName.charAt(0).toUpperCase() || 'W';
     DOM.userInitial.textContent = initial;
-    DOM.userPillName.textContent = name;
+    DOM.userPillName.textContent = cleanName;
 
     // Settings form inputs
-    if (DOM.settingName) DOM.settingName.value = name;
+    if (DOM.settingName) DOM.settingName.value = cleanName;
     if (DOM.settingStartDate) DOM.settingStartDate.value = startDate;
     if (DOM.settingGoal) DOM.settingGoal.value = goal;
 
@@ -1596,7 +1618,7 @@
    */
   function exportData() {
     const backupData = {
-      appName: 'SAI_WINTER_ARC',
+      appName: 'WINTER_ARC',
       version: '1.0',
       exportTimestamp: new Date().toISOString(),
       profile: JSON.parse(localStorage.getItem(STORAGE_KEYS.PROFILE) || 'null'),
@@ -1634,7 +1656,7 @@
       try {
         const imported = JSON.parse(e.target.result);
 
-        if (!imported || (imported.appName !== 'SAI_WINTER_ARC' && !imported.profile && !imported.habits)) {
+        if (!imported || (imported.appName !== 'WINTER_ARC' && imported.appName !== 'SAI_WINTER_ARC' && !imported.profile && !imported.habits)) {
           alert('Invalid backup file. Please select a valid Winter Arc JSON backup.');
           return;
         }
