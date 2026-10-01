@@ -34,7 +34,8 @@
     REVIEWS: 'winterArcReviews',
     SETTINGS: 'winterArcSettings',
     CUSTOM_HABITS: 'winterArcCustomHabits',
-    HIDDEN_HABITS: 'winterArcHiddenHabits'
+    HIDDEN_HABITS: 'winterArcHiddenHabits',
+    THEME: 'winterArcTheme'
   };
 
   // --- CORE 12 DISCIPLINE HABITS (Directly aligned with poster reference) ---
@@ -100,7 +101,8 @@
     activeGoalMonth: '1', // '1', '2', '3', or 'all'
     analyticsRange: 7, // 7, 30, or 92
     soundEnabled: true,
-    snowEnabled: true
+    snowEnabled: true,
+    theme: 'light'
   };
 
   // Web Audio Context for synthesized atmospheric wind and subtle feedback
@@ -126,6 +128,7 @@
     // Landing Buttons
     btnLandingStart: document.getElementById('btnLandingStart'),
     btnLandingExisting: document.getElementById('btnLandingExisting'),
+    btnLandingThemeToggle: document.getElementById('btnLandingThemeToggle'),
 
     // Navigation
     topNav: document.getElementById('topNav'),
@@ -133,6 +136,9 @@
     navDayBadge: document.getElementById('navDayBadge'),
     desktopNavLinks: document.querySelectorAll('#desktopNavLinks .nav-link'),
     mobileNavLinks: document.querySelectorAll('#mobileBottomNav .mobile-nav-link'),
+    btnThemeToggle: document.getElementById('btnThemeToggle'),
+    themeIconSun: document.querySelector('.theme-icon-sun'),
+    themeIconMoon: document.querySelector('.theme-icon-moon'),
     btnSoundToggle: document.getElementById('btnSoundToggle'),
     btnSnowToggle: document.getElementById('btnSnowToggle'),
     navUserProfileBtn: document.getElementById('navUserProfileBtn'),
@@ -1908,12 +1914,21 @@
 
     ctx.clearRect(0, 0, width, height);
 
+    const isDark = appState.theme === 'dark';
+    const gridStroke = isDark ? 'rgba(180, 220, 255, 0.09)' : 'rgba(201, 214, 227, 0.55)';
+    const textFill = isDark ? '#8FAEC9' : '#6B8EAD';
+    const lineStroke = isDark ? '#a8d4f0' : '#1E3A5F';
+    const lineGlow = isDark ? 'rgba(148, 198, 230, 0.5)' : 'rgba(30, 58, 95, 0.25)';
+    const dotBorder = isDark ? '#030810' : '#FFFFFF';
+    const dotHigh = isDark ? '#e8f4fd' : '#1E3A5F';
+    const dotLow = isDark ? '#7ab8d9' : '#6B8EAD';
+
     // Draw horizontal grid lines & Y labels (0%, 25%, 50%, 75%, 100%)
     const ySteps = [0, 25, 50, 75, 100];
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+    ctx.strokeStyle = gridStroke;
     ctx.lineWidth = 1;
     ctx.font = '10px Inter, sans-serif';
-    ctx.fillStyle = '#6b7280';
+    ctx.fillStyle = textFill;
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
 
@@ -1939,9 +1954,15 @@
 
     // Create Gradient Area under curve
     const areaGradient = ctx.createLinearGradient(0, padTop, 0, padTop + chartHeight);
-    areaGradient.addColorStop(0, 'rgba(212, 175, 55, 0.32)');
-    areaGradient.addColorStop(0.6, 'rgba(126, 184, 218, 0.08)');
-    areaGradient.addColorStop(1, 'rgba(5, 7, 10, 0)');
+    if (isDark) {
+      areaGradient.addColorStop(0, 'rgba(148, 198, 230, 0.25)');
+      areaGradient.addColorStop(0.6, 'rgba(74, 159, 196, 0.08)');
+      areaGradient.addColorStop(1, 'rgba(3, 8, 16, 0)');
+    } else {
+      areaGradient.addColorStop(0, 'rgba(30, 58, 95, 0.18)');
+      areaGradient.addColorStop(0.6, 'rgba(107, 142, 173, 0.08)');
+      areaGradient.addColorStop(1, 'rgba(244, 247, 250, 0)');
+    }
 
     // Path drawing
     ctx.beginPath();
@@ -1972,33 +1993,33 @@
       ctx.quadraticCurveTo(coords[i].x, coords[i].y, xc, yc);
     }
     ctx.lineTo(coords[coords.length - 1].x, coords[coords.length - 1].y);
-    ctx.strokeStyle = '#d4af37';
+    ctx.strokeStyle = lineStroke;
     ctx.lineWidth = 2.5;
-    ctx.shadowColor = 'rgba(212, 175, 55, 0.6)';
-    ctx.shadowBlur = 10;
+    ctx.shadowColor = lineGlow;
+    ctx.shadowBlur = 8;
     ctx.stroke();
     ctx.shadowBlur = 0; // reset shadow
 
     // Draw Points & X-axis Labels
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
-    ctx.fillStyle = '#9ca3af';
+    ctx.fillStyle = textFill;
 
     const labelInterval = rangeDays >= 90 ? 10 : rangeDays === 30 ? 4 : 1;
 
     coords.forEach((c, idx) => {
       // Draw point dot
       ctx.beginPath();
-      ctx.arc(c.x, c.y, 3.5, 0, Math.PI * 2);
-      ctx.fillStyle = c.pt.score >= 80 ? '#fdf1d6' : '#d4af37';
+      ctx.arc(c.x, c.y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = c.pt.score >= 80 ? dotHigh : dotLow;
       ctx.fill();
-      ctx.strokeStyle = '#05070a';
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = dotBorder;
+      ctx.lineWidth = 2;
       ctx.stroke();
 
       // Draw X label
       if (idx % labelInterval === 0 || idx === coords.length - 1) {
-        ctx.fillStyle = '#9ca3af';
+        ctx.fillStyle = textFill;
         ctx.fillText(c.pt.label, c.x, padTop + chartHeight + 10);
       }
     });
@@ -2191,6 +2212,74 @@
       DOM.btnSnowToggle.classList.toggle('active', appState.snowEnabled);
     }
     updateSoundToggleUI(appState.soundEnabled);
+
+    // Load persisted theme (defaults to 'light', toggleable to 'dark')
+    const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) || 'light';
+    applyTheme(savedTheme, false);
+  }
+
+  /**
+   * Applies the theme ('light' = Soft Winter White, 'dark' = Midnight Arctic)
+   */
+  function applyTheme(theme, showToastMsg = false) {
+    appState.theme = theme;
+    try {
+      localStorage.setItem(STORAGE_KEYS.THEME, theme);
+    } catch (e) {}
+
+    const isDark = theme === 'dark';
+    if (isDark) {
+      document.body.classList.add('theme-dark');
+      document.body.classList.remove('theme-light');
+      if (DOM.themeIconSun) DOM.themeIconSun.style.display = 'block';
+      if (DOM.themeIconMoon) DOM.themeIconMoon.style.display = 'none';
+      if (DOM.btnThemeToggle) {
+        DOM.btnThemeToggle.title = 'Switch to Soft Winter White';
+        DOM.btnThemeToggle.classList.add('active');
+      }
+      const landingPill = document.getElementById('btnLandingThemeToggle');
+      if (landingPill) {
+        landingPill.innerHTML = '<span class="theme-pill-icon">☀️</span><span class="theme-pill-text">Light Mode</span>';
+      }
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', '#030810');
+      if (showToastMsg) showToast('🌙 Midnight Arctic theme enabled');
+    } else {
+      document.body.classList.remove('theme-dark');
+      document.body.classList.add('theme-light');
+      if (DOM.themeIconSun) DOM.themeIconSun.style.display = 'none';
+      if (DOM.themeIconMoon) DOM.themeIconMoon.style.display = 'block';
+      if (DOM.btnThemeToggle) {
+        DOM.btnThemeToggle.title = 'Switch to Midnight Dark';
+        DOM.btnThemeToggle.classList.remove('active');
+      }
+      const landingPill = document.getElementById('btnLandingThemeToggle');
+      if (landingPill) {
+        landingPill.innerHTML = '<span class="theme-pill-icon">🌙</span><span class="theme-pill-text">Dark Mode</span>';
+      }
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', '#F4F7FA');
+      if (showToastMsg) showToast('☀️ Soft Winter White theme enabled');
+    }
+
+    // Synchronize Settings theme selector buttons if present
+    const btnChoiceLight = document.getElementById('btnThemeChoiceLight');
+    const btnChoiceDark = document.getElementById('btnThemeChoiceDark');
+    if (btnChoiceLight) btnChoiceLight.classList.toggle('active', !isDark);
+    if (btnChoiceDark) btnChoiceDark.classList.toggle('active', isDark);
+
+    // Refresh analytics chart colors if chart exists
+    if (typeof renderAnalytics === 'function') {
+      try { renderAnalytics(appState.analyticsRange); } catch (e) {}
+    }
+  }
+
+  /**
+   * Toggles between previous Dark Arctic and Soft Winter White themes
+   */
+  function toggleTheme() {
+    const next = appState.theme === 'dark' ? 'light' : 'dark';
+    applyTheme(next, true);
   }
 
   function saveSettings() {
@@ -2273,9 +2362,12 @@
         }
 
         ctx.beginPath();
-        ctx.fillStyle = `rgba(240, 245, 255, ${p.opacity})`;
+        ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(0.95, p.opacity + 0.25)})`;
+        ctx.shadowColor = 'rgba(107, 142, 173, 0.22)';
+        ctx.shadowBlur = 3;
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2, true);
         ctx.fill();
+        ctx.shadowBlur = 0;
       }
 
       snowAnimationId = requestAnimationFrame(renderSnow);
@@ -2776,6 +2868,23 @@
       e.preventDefault();
       switchPage('settingsSection');
     });
+
+    // Theme Switcher Buttons (Top Nav and Landing Screen)
+    if (DOM.btnThemeToggle) {
+      DOM.btnThemeToggle.addEventListener('click', toggleTheme);
+    }
+    const btnLandingTheme = document.getElementById('btnLandingThemeToggle');
+    if (btnLandingTheme) {
+      btnLandingTheme.addEventListener('click', toggleTheme);
+    }
+    const btnChoiceLight = document.getElementById('btnThemeChoiceLight');
+    if (btnChoiceLight) {
+      btnChoiceLight.addEventListener('click', () => applyTheme('light', true));
+    }
+    const btnChoiceDark = document.getElementById('btnThemeChoiceDark');
+    if (btnChoiceDark) {
+      btnChoiceDark.addEventListener('click', () => applyTheme('dark', true));
+    }
 
     // Atmosphere Sound Button
     DOM.btnSoundToggle.addEventListener('click', toggleAtmosphereSound);
