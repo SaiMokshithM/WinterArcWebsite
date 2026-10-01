@@ -1786,6 +1786,7 @@ body::after {
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
   background: rgba(0, 0, 0, 0.25);
+  position: relative;
 }
 
 .matrix-table {
@@ -4700,6 +4701,74 @@ body::after {
   .habit-remove-btn {
     padding: 6px 8px;
     min-height: 32px;
+  }
+
+  /* ── Weekly Matrix Mobile Optimizations ── */
+  .weekly-matrix-wrap {
+    margin: 0 -0.1rem;
+  }
+
+  .matrix-table-scroll {
+    border-radius: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  /* Show a subtle scroll hint shadow on right edge */
+  .matrix-table-scroll::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 24px; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(0,0,0,0.12));
+    pointer-events: none;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .matrix-table {
+    min-width: 480px; /* reduced from 620px for smaller phones */
+    font-size: 0.75rem;
+  }
+
+  .matrix-table th {
+    padding: 0.6rem 0.3rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+  }
+
+  .matrix-th-habit {
+    width: 32%;
+    padding-left: 0.75rem !important;
+    font-size: 0.66rem;
+  }
+
+  .matrix-table td {
+    padding: 0.55rem 0.3rem;
+    font-size: 0.75rem;
+  }
+
+  .matrix-habit-name-cell {
+    padding-left: 0.75rem !important;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    line-height: 1.25;
+  }
+
+  .matrix-habit-icon {
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  /* Larger tap targets for checkboxes on touch */
+  .matrix-chk-box {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    font-size: 13px;
+  }
+
+  .matrix-day-cell {
+    min-width: 36px;
   }
 
   /* Circular Progress Gauge Column */
