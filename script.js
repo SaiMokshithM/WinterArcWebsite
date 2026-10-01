@@ -423,13 +423,19 @@
     if (DOM.pageTitle) DOM.pageTitle.textContent = `${upperName} — WINTER ARC | 92 Days of Discipline`;
     if (DOM.certRecipientName) DOM.certRecipientName.textContent = upperName;
 
-    // Greeting
-    const hour = new Date().getHours();
-    let timeGreeting = 'GOOD MORNING';
-    if (hour >= 12 && hour < 17) timeGreeting = 'GOOD AFTERNOON';
-    else if (hour >= 17) timeGreeting = 'GOOD EVENING';
+    // Live auto-updating greeting (updates every minute)
+    function updateGreeting() {
+      const h = new Date().getHours();
+      let greet = 'GOOD MORNING';
+      if (h >= 12 && h < 17) greet = 'GOOD AFTERNOON';
+      else if (h >= 17) greet = 'GOOD EVENING';
+      DOM.heroGreeting.textContent = `${greet}, ${upperName}.`;
+    }
+    updateGreeting(); // run immediately on load
 
-    DOM.heroGreeting.textContent = `${timeGreeting}, ${upperName}.`;
+    // Clear any previous interval and start a new one
+    if (window._greetingInterval) clearInterval(window._greetingInterval);
+    window._greetingInterval = setInterval(updateGreeting, 60 * 1000);
 
     // Nav pill
     const initial = cleanName.charAt(0).toUpperCase() || 'W';
